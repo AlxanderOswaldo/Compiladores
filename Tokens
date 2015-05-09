@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="1.7.0_09" class="java.beans.XMLDecoder">
+ <object class="modelo.Archivo">
+  <void property="lista">
+   <object class="java.util.ArrayList">
+    <void method="add">
+     <object class="modelo.Nodo">
+      <void property="descripcion">
+       <string>Numero</string>
+      </void>
+      <void property="lexema">
+       <string>/^[0-9]+$/</string>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="modelo.Nodo">
+      <void property="descripcion">
+       <string>Mas</string>
+      </void>
+      <void property="lexema">
+       <string>+</string>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="modelo.Nodo">
+      <void property="descripcion">
+       <string>Menos</string>
+      </void>
+      <void property="lexema">
+       <string>-</string>
+      </void>
+     </object>
+    </void>
+   </object>
+  </void>
+ </object>
+</java>
