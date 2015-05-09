@@ -6,7 +6,7 @@ public class NodoToken {
 
     public NodoToken() {
     }
-
+//..
     public NodoToken(int token, String lexema) {
         this.token = token;
         this.lexema = lexema;
