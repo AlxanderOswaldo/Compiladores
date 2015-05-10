@@ -11,10 +11,10 @@ public int matriz[][];
         this.descripcion = descripcion;
         this.lexema = lexema;      
     }
-
-    /**
-     * @return the descripcion
-     */
+      public void pruebatortoise(){
+    int numeroaleatrio=4567890;
+}
+   
     public String getDescripcion() {
         return descripcion;
     }
