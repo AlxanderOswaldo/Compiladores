@@ -1,0 +1,741 @@
+public Vista() throws IOException {
+        initComponents();
+        javax.swing.JEditorPane editor = new JEditorPane();
+        jEditorPane1.setContentType("text/java");
+        ActualizarTree();
+        jEditorPane1.setVisible(false);
+        JMenuBar menuBar = new JMenuBar();
+        JMenuItem item1 = new JMenuItem("Nuevo");
+        JMenuItem item2 = new JMenuItem("Abrir");
+        JMenuItem item3 = new JMenuItem("Guardar");
+//        JMenuItem item4 = new JMenuItem("Salir");
+//        JMenuItem item5 = new JMenuItem("Acerca de");
+        setJMenuBar(menuBar);
+        setVisible(true);
+        item1.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String nombre = JOptionPane.showInputDialog("Ingrese nombre archivo");
+                archivoActual = nombre + ".txt";
+                try {
+                    JOptionPane.showMessageDialog(null, crearArchivo(nombre));
+                    jEditorPane1.setVisible(true);
+                } catch (IOException ex) {
+                    Logger.getLogger(Vista.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                ActualizarTree();
+            }
+        });
+        item2.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser jf = new JFileChooser();
+                FileNameExtensionFilter filter = new FileNameExtensionFilter("TEXT FILES", "txt", "text");
+                jf.setFileFilter(filter);
+                jf.showOpenDialog(null);
+                File abre = jf.getSelectedFile();
+                String nombre = jf.getSelectedFile().getName();
+                String direccion = jf.getSelectedFile().getAbsolutePath();
+                String texto = "";
+                System.out.println(direccion);
+                FileReader fr = null;
+                BufferedReader br = null;
+                try {
+                    fr = new FileReader(abre);
+                    br = new BufferedReader(fr);
+                    // Lectura del fichero
+                    String linea;
+                    while ((linea = br.readLine()) != null) {
+                        System.out.println(linea + "\n");
+                        texto = texto + linea + "\n";
+                    }
+                    jEditorPane1.setVisible(true);
+                    jEditorPane1.setText(texto);
+                } catch (IOException ex) {
+                    Logger.getLogger(Vista.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
+        });
+        item3.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(rootPane, EscribirArchivo(archivoActual, jEditorPane1.getText()));
+            }
+        });
+
+        Font font = new Font("Verdana", Font.BOLD, 12);
+
+    }
+
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
+    private void initComponents() {
+
+        buttonGroup1 = new javax.swing.ButtonGroup();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jButton1 = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jSeparator2 = new javax.swing.JSeparator();
+        jPanel1 = new javax.swing.JPanel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        jButton3 = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        jButton5 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
+        panel1 = new java.awt.Panel();
+        jLabel3 = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        jButton7 = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        txtExpresion = new javax.swing.JTextField();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        jEditorPane1 = new javax.swing.JEditorPane();
+        jButton8 = new javax.swing.JButton();
+        jButton9 = new javax.swing.JButton();
+        jButton10 = new javax.swing.JButton();
+        jButton11 = new javax.swing.JButton();
+        jButton12 = new javax.swing.JButton();
+        jButton13 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jTextField2 = new javax.swing.JTextField();
+
+        jMenuItem1.setText("jMenuItem1");
+
+        jMenuItem2.setText("jMenuItem2");
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Proyecto_Tokens_Matriz");
+        setPreferredSize(new java.awt.Dimension(750, 700));
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jButton1.setText("ADD");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 170, 140, -1));
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(jTable1);
+
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 200, 430, 140));
+        getContentPane().add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 430, 1320, 0));
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+
+        jButton3.setText("Abrir XML");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(285, 285, 285)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(71, 71, 71)
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 10, 240, 160));
+
+        jButton5.setText("Nuevo");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 90, -1));
+
+        jButton6.setText("Guardar");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 0, 80, -1));
+
+        javax.swing.GroupLayout panel1Layout = new javax.swing.GroupLayout(panel1);
+        panel1.setLayout(panel1Layout);
+        panel1Layout.setHorizontalGroup(
+            panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        panel1Layout.setVerticalGroup(
+            panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 390, Short.MAX_VALUE)
+        );
+
+        getContentPane().add(panel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 30, 0, 390));
+
+        jLabel3.setText("Expresión:");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, -1, -1));
+
+        jButton2.setText("#E");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 40, -1, -1));
+
+        jButton4.setText("#D");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 40, -1, -1));
+
+        jButton7.setText("ID");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 40, -1, -1));
+
+        jLabel5.setText("Descripcion Token:");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, -1, -1));
+
+        jLabel6.setText("Expresión Token:");
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, -1, -1));
+        getContentPane().add(txtExpresion, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 70, 290, -1));
+
+        jScrollPane6.setViewportView(jEditorPane1);
+
+        getContentPane().add(jScrollPane6, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 100, 290, 60));
+
+        jButton8.setText("Eliminar");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton8, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 200, -1, -1));
+
+        jButton9.setText("Primero");
+        jButton9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton9ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton9, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 230, -1, -1));
+
+        jButton10.setText("Subir");
+        jButton10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton10ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton10, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 260, -1, -1));
+
+        jButton11.setText("Bajar");
+        jButton11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton11ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton11, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 290, -1, -1));
+
+        jButton12.setText("Ultimo");
+        jButton12.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton12ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton12, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 320, -1, -1));
+
+        jButton13.setText("Generar Matriz");
+        getContentPane().add(jButton13, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 350, 130, 30));
+
+        jLabel1.setText("# Estados:");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 360, -1, -1));
+        getContentPane().add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 360, 100, -1));
+
+        pack();
+    }// </editor-fold>                        
+    public void ArchivosEnCarpeta() {
+        String dir1 = System.getProperty("user.dir");
+        File dir = new File(dir1 + "\\archivos");
+        System.out.println("Archivos en la Carpeta: " + dir.getPath() + ":");
+        String[] ficheros = dir.list();
+        if (ficheros == null) {
+            System.out.println("No hay ficheros en el directorio especificado");
+        } else {
+            for (int x = 0; x < ficheros.length; x++) {
+                System.out.println(ficheros[x]);
+            }
+        }
+    }
+
+    public void listarDirectorio(File f, String separador) {
+        File[] ficheros = f.listFiles();
+        for (int x = 0; x < ficheros.length; x++) {
+            System.out.println(separador + ficheros[x].getName());
+            if (ficheros[x].isDirectory()) {
+                String nuevo_separador;
+                nuevo_separador = separador + " ";
+                listarDirectorio(ficheros[x], nuevo_separador);
+            }
+        }
+    }
+    String archivoseleccionado = "";
+    String todo = "";
+    String archivoActual = "";
+    static int cont = 0;
+    Compilador comp = new Compilador();
+
+    public void ActualizarTree() {
+        String dir1 = System.getProperty("user.dir");
+        File dir = new File(dir1 + "\\archivos");
+        int i = 0;
+        DefaultMutableTreeNode day;
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Archivos");
+        File[] ficheros = dir.listFiles();
+        while (i < ficheros.length) {
+
+            day = new DefaultMutableTreeNode(ficheros[i].getName());
+            root.add(day);
+            i++;
+        }
+        final JTree tree = new JTree(root);
+        JScrollPane pane = new JScrollPane(tree);
+        pane.setPreferredSize(new Dimension(150, 300));
+        jScrollPane5.getViewport().add(tree);
+        tree.getSelectionModel().addTreeSelectionListener(new TreeSelectionListener() {
+            @Override
+            public void valueChanged(TreeSelectionEvent e) {
+                DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
+                System.out.println(selectedNode.getUserObject().toString());
+                archivoseleccionado = selectedNode.getUserObject().toString();
+                FileReader fr = null;
+                BufferedReader br = null;
+                try {
+                    fr = new FileReader("./archivos/" + archivoseleccionado);
+                    br = new BufferedReader(fr);
+                    // Lectura del fichero
+                    String linea;
+                    while ((linea = br.readLine()) != null) {
+                        System.out.println(linea + "\n");
+                        todo = todo + linea + "\n";
+                    }
+                } catch (IOException ex) {
+                    Logger.getLogger(Vista.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+    }
+
+    class MyHighlightPainter
+            extends DefaultHighlighter.DefaultHighlightPainter {
+
+        public MyHighlightPainter(Color color) {
+            super(color);
+        }
+    }
+
+    public void Estilo() throws BadLocationException {
+
+        final JTextArea textArea = new JTextArea();
+
+        textArea.setSelectionColor(Color.RED);
+
+        String turnToString2 = "hola";
+        int pos2 = textArea.getText().indexOf(turnToString2);
+        textArea.getHighlighter().addHighlight(pos2,
+                pos2 + turnToString2.length(),
+                new DefaultHighlighter.DefaultHighlightPainter(Color.yellow));
+        textArea.setCaretPosition(pos2);
+        jEditorPane1.add(textArea);
+    }
+
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {                                         
+
+        String mensaje = "RUN... \n";
+        ActualizarTree();
+        ArchivosEnCarpeta();
+        EscribirArchivo(archivoActual, jEditorPane1.getText());
+        Compilador c = new Compilador();
+        c.setCadena(jEditorPane1.getText());
+        c.analizarLexico();
+        int i = 0;
+        String cadena = "";
+        DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+        modelo.setNumRows(c.DevolverTokens().size());
+        modelo.setColumnCount(3);
+        jTable1.setShowGrid(true);
+        String[] n = new String[4];
+        n[0] = "°";
+        n[1] = "Expresion Token";
+        n[2] = "Posicion";
+        n[3] = "Descripcion Token";
+//        n[3] = "Nombre Corto";
+        modelo.setColumnIdentifiers(n);
+        Token t = new Token();
+        while (i < c.DevolverTokens().size()) {
+            mensaje = mensaje + i + " ----->     " + c.DevolverTokens().get(i).getLexema() + "    " + "\n";
+            int j = 0;
+            while (j < t.listaTokens().length) {
+                if (t.listaTokens()[j][0].equals(String.valueOf(c.DevolverTokens().get(i).getToken()))) {
+                    modelo.setValueAt(i + 1, i, 0);
+                    modelo.setValueAt(c.DevolverTokens().get(i).getLexema(), i, 1);
+                    modelo.setValueAt(t.listaTokens()[j][0], i, 2);
+                    modelo.setValueAt(t.listaTokens()[j][1], i, 3);
+//                    modelo.setValueAt(c.DevolverTokens().get(i).getLexema(), i, 3);/////no
+
+                }
+                j++;
+            }
+            j = 0;
+            i++;
+        }
+
+        if (c.analizarSintactico() == "CORRECTO") {
+            mensaje = mensaje + "BUILD SUCCESSFUL (total time: 2 seconds)";
+        } else {
+            mensaje = mensaje + "ERROR";
+        }
+        //jTextArea2.setText(mensaje);
+        jTable1.setModel(modelo);
+    }                                        
+    @SuppressWarnings("empty-statement")
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {                                         
+        archivoActual = archivoseleccionado;
+        System.out.println(archivoActual);
+        int si = 1;
+        String no = "2";
+        if (JOptionPane.showConfirmDialog(this, "Esta seguro que quiere abrir el archivo? Se perdera el archivo actual.") == 1);
+        {
+            todo = "";
+            FileReader fr = null;
+            BufferedReader br = null;
+            try {
+                fr = new FileReader("./archivos/" + archivoseleccionado);
+                br = new BufferedReader(fr);
+                // Lectura del fichero
+                String linea;
+                while ((linea = br.readLine()) != null) {
+                    System.out.println(linea + "\n");
+                    todo = todo + linea + "\n";
+                }
+                jEditorPane1.setVisible(true);
+                jEditorPane1.setText(todo);
+            } catch (IOException ex) {
+                Logger.getLogger(Vista.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            //jLabel3.setText(archivoseleccionado);
+        }
+    }                                        
+    public String crearArchivo(String nombreArchivo) throws IOException {
+        String mensaje = "hola"; // Aqui se le asigna el nombre y 
+        FileWriter fw = null;	 // la extension al archivo 
+        try {
+            fw = new FileWriter("./archivos/" + nombreArchivo + ".txt");
+            mensaje = "correcto";
+        } catch (IOException ex) {
+            mensaje = "incorrecto";
+        }
+        return mensaje;
+    }
+
+    public String Eliminar(String nombreArchivo) throws Exception {
+        try {
+            File fichero = new File(".//archivos//" + nombreArchivo);
+            if (!fichero.delete()) {
+                throw new Exception("El fichero " + nombreArchivo
+                        + " no puede ser borrado!");
+            }
+            return "Archivo Eliminado";
+        } catch (Exception e) {
+            throw new Exception(e);
+
+        } // end try
+    }
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {                                         
+        String nombre = JOptionPane.showInputDialog("Ingrese nombre archivo");
+        archivoActual = nombre + ".txt";
+        try {
+            JOptionPane.showMessageDialog(this, crearArchivo(nombre));
+            jEditorPane1.setVisible(true);
+        } catch (IOException ex) {
+            Logger.getLogger(Vista.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        ActualizarTree();
+    }                                        
+    public String EscribirArchivo(String nombreArchivo, String texto) {
+        try {
+            File outFile = new File(".//archivos//" + nombreArchivo);
+            BufferedWriter writer = new BufferedWriter(new FileWriter(outFile));
+            writer.write(texto);
+            writer.close();
+            return "Archivo Guardado";
+        } catch (IOException e) {
+            System.err.println(e);
+            return "error";
+        }
+    }
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {                                         
+        JOptionPane.showMessageDialog(rootPane, EscribirArchivo(archivoActual, jEditorPane1.getText()));
+    }                                        
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {                                         
+        // TODO add your handling code here:
+    }                                        
+
+    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {                                          
+        // TODO add your handling code here:
+        DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel(); //TableProducto es el nombre de mi tabla ;)
+        if (jTable1.getSelectedRow() > 0) {
+
+            Object[] fprimera = {jTable1.getValueAt(0, 0).toString(), jTable1.getValueAt(0, 1).toString(), jTable1.getValueAt(0, 2).toString(), jTable1.getValueAt(0, 3).toString()};
+
+            dtm.setValueAt(jTable1.getValueAt(jTable1.getSelectedRow(), 1).toString(), 0, 1);
+            dtm.setValueAt(jTable1.getValueAt(jTable1.getSelectedRow(), 1).toString(), 0, 2);
+            dtm.setValueAt(jTable1.getValueAt(jTable1.getSelectedRow(), 1).toString(), 0, 3);
+            dtm.removeRow(0);
+            dtm.addRow(fprimera);
+        } else {
+            JOptionPane.showMessageDialog(null, "NO SE PUEDE!!!");
+        }
+//        if (cont >= 0) {
+//            if (cont != 0) {
+//                cont--;
+//            } else {
+//                JOptionPane.showMessageDialog(null, "NO HAY ANTERIOR !!!");
+//            }
+//
+//            List<Lectura> ele = comp.DevolverTokens();
+//            for (Lectura e : ele) {
+//
+//                jTable1.remove(cont);
+//
+//            }
+//
+//        }
+    }                                         
+
+    private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {                                          
+
+        DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel(); //TableProducto es el nombre de mi tabla ;)
+        int fs = jTable1.getSelectedRow();
+        if (jTable1.getSelectedRow() < jTable1.getRowCount()-1) {
+
+            String num = jTable1.getValueAt(fs, 0).toString();
+            String a = jTable1.getValueAt(fs, 1).toString();
+            String b = jTable1.getValueAt(fs, 2).toString();
+            String c = jTable1.getValueAt(fs, 3).toString();
+
+            String nump = jTable1.getValueAt(fs + 1, 0).toString();
+            String ap = jTable1.getValueAt(fs + 1, 1).toString();
+            String bp = jTable1.getValueAt(fs + 1, 2).toString();
+            String cp = jTable1.getValueAt(fs + 1, 3).toString();
+
+           // Object[] fprimera = {jTable1.getValueAt(jTable1.getRowCount() - 2, 0).toString(), jTable1.getValueAt(jTable1.getRowCount() - 2, 1).toString(), jTable1.getValueAt(jTable1.getRowCount() - 2, 2).toString(), jTable1.getValueAt(jTable1.getRowCount() - 2, 3).toString()};
+   
+           
+          
+            
+            dtm.setValueAt(nump, jTable1.getSelectedRow() , 0);
+            dtm.setValueAt(ap, jTable1.getSelectedRow() , 1);
+            dtm.setValueAt(bp, jTable1.getSelectedRow() , 2);
+            dtm.setValueAt(cp, jTable1.getSelectedRow(), 3);
+            
+                  dtm.setValueAt(num, jTable1.getSelectedRow() + 1, 0);
+            dtm.setValueAt(a, jTable1.getSelectedRow() + 1, 1);
+            dtm.setValueAt(b, jTable1.getSelectedRow() + 1, 2);
+            dtm.setValueAt(c, jTable1.getSelectedRow() + 1, 3); 
+        //  jTable1.getSelectedRow();
+          //jTable1.getSelectedRow();
+              //dtm.setValueAt(jTable1.getValueAt(jTable1.getSelectedRow() + 2, 0), jTable1.getSelectedRow() + 2, 0);
+       
+          
+            //dtm.removeRow(jTable1.getRowCount() - 1);
+           // dtm.addRow(fprimera);
+        } else {
+            JOptionPane.showMessageDialog(null, "NO SE PUEDE!!!");
+        }
+
+//        List<Lectura> ele = comp.DevolverTokens();
+//        if (ele != null) {
+//
+//            if (cont < ele.size()) {
+//                for (Lectura e : ele) {
+//
+//                    jTable1.remove(cont);
+//
+//                }
+//                cont++;
+//            } else {
+//
+//                JOptionPane.showMessageDialog(null, "NO HAY siguiente !!!");
+//
+//            }
+//
+//        }
+    }                                         
+
+    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {                                         
+        // TODO add your handling code here:
+        //int i = 0;
+
+        //jTable1.remove(i);
+        DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel(); //TableProducto es el nombre de mi tabla ;)
+        int fs = jTable1.getSelectedRow();
+        String nump = jTable1.getValueAt(0, 0).toString();
+        String ap = jTable1.getValueAt(0, 1).toString();
+        String bp = jTable1.getValueAt(0, 2).toString();
+        String cp = jTable1.getValueAt(0, 3).toString();
+        System.out.println("" + jTable1.getValueAt(0, 0).toString() + "" + jTable1.getValueAt(0, 1).toString() + "" + jTable1.getValueAt(0, 2).toString() + "" + jTable1.getValueAt(0, 3).toString());
+
+        String num = jTable1.getValueAt(fs, 0).toString();
+        String a = jTable1.getValueAt(fs, 1).toString();
+        String b = jTable1.getValueAt(fs, 2).toString();
+        String c = jTable1.getValueAt(fs, 3).toString();
+
+        Object[] fprimera = {nump, ap, bp, cp};
+
+        System.out.println("" + jTable1.getValueAt(0, 0).toString() + "" + jTable1.getValueAt(0, 1).toString() + "" + jTable1.getValueAt(0, 2).toString() + "" + jTable1.getValueAt(0, 3).toString());
+        dtm.setValueAt(num, 0, 0);
+        dtm.setValueAt(a, 0, 1);
+        dtm.setValueAt(b, 0, 2);
+        dtm.setValueAt(c, 0, 3);
+        dtm.removeRow(fs);
+        dtm.addRow(fprimera);
+//dtm.setValueAt(num, 0, 0);
+//dtm.setValueAt(a, 0, 1);
+//dtm.setValueAt(b, 0, 2);
+//dtm.setValueAt(c,0, 3);
+
+  //dtm.addRow(fprimera);
+//dtm.setValueAt(a, cont, cont);
+        ///  dtm.removeRow(0);
+//dtm.addTableModelListener(jTable1.getModel(),0);
+
+    }                                        
+
+    private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {                                          
+        // TODO add your handling code here:
+        jTable1.getMaximumSize();
+
+        DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel(); //TableProducto es el nombre de mi tabla ;)
+        int fs = jTable1.getSelectedRow();
+        int u = jTable1.getRowCount();
+        System.out.println("" + u);
+
+        String num = jTable1.getValueAt(fs, 0).toString();
+        String a = jTable1.getValueAt(fs, 1).toString();
+        String b = jTable1.getValueAt(fs, 2).toString();
+        String c = jTable1.getValueAt(fs, 3).toString();
+
+        String numu = jTable1.getValueAt(u - 1, 0).toString();
+        String au = jTable1.getValueAt(u - 1, 1).toString();
+        String bu = jTable1.getValueAt(u - 1, 2).toString();
+        String cu = jTable1.getValueAt(u - 1, 3).toString();
+        System.out.println("" + jTable1.getValueAt(u - 1, 0).toString() + "" + jTable1.getValueAt(u - 1, 1).toString() + "" + jTable1.getValueAt(u - 1, 2).toString() + "" + jTable1.getValueAt(u - 1, 3).toString());
+        dtm.removeRow(fs);
+
+        Object[] fultima = {num, a, b, c};
+
+        System.out.println("" + jTable1.getValueAt(0, 0).toString() + "" + jTable1.getValueAt(0, 1).toString() + "" + jTable1.getValueAt(0, 2).toString() + "" + jTable1.getValueAt(0, 3).toString());
+
+        dtm.addRow(fultima);
+
+    }                                         
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {                                         
+//        txtExpresion.setText("");
+//        txtExpresion.setText("[0-9]*");// TODO add your handling code here:
+    }                                        
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {                                         
+        DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel(); //TableProducto es el nombre de mi tabla ;)
+        dtm.removeRow(jTable1.getSelectedRow());
+    }                                        
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {                                         
+       
+//           txtExpresion.setText("");
+//        txtExpresion.setText("[0-9]+(\\.[0-9][0-9]?)?");
+    }                                        
+    private void jTree1ActionPerformed(java.awt.event.ActionEvent evt) {
+        jEditorPane1.setText(todo);
+    }
+
+    public static void main(String args[]) {
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    new Vista().setVisible(true);
+                } catch (IOException ex) {
+                    Logger.getLogger(Vista.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+
+
+
+
+
+encabezado=FrmiToken.identificadores;
+        encabezado1=new String[encabezado.length+1];
+        encabezado1[0]="";
+                for (int i = 1; i < encabezado1.length; i++) {
+                    encabezado1[i]=encabezado[i-1];
+                }
+        dtmMatriz = new DefaultTableModel(encabezado, nEst){
+                    
+                    @Override
+                    public boolean isCellEditable(int row, int column) {
+                        if (0 == column) {
+                            return false;
+                        }
+                        return super.isCellEditable(row, column);
+                    }
+                };
+        nEst= Integer.parseInt(txtNEstados.getText());
+        dtmMatriz.setColumnCount(encabezado1.length);
+        dtmMatriz.setColumnIdentifiers(encabezado1);
+        dtmMatriz.setRowCount(nEst);
+
+        tblMatriz.setModel(dtmMatriz);
+        tblMatriz.setDragEnabled(false);
+        TableColumn tc = tblMatriz.getColumn("");
+        tc.setPreferredWidth(30);
+        tc.setMaxWidth(30);
+        tc.setMinWidth(30);
+        tblMatriz.getColumnModel().getColumn(0).setCellRenderer(tblMatriz.getTableHeader().getDefaultRenderer());
+        
+    }                     
