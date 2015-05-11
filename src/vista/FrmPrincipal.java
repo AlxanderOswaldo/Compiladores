@@ -27,10 +27,10 @@ import modelo.Nodo;
  */
 public class FrmPrincipal extends javax.swing.JFrame {
     Archivo arc;
-    Matrix m;
+   int [][]m;
      ArrayList<Nodo> lista= new ArrayList();
       DefaultTableModel tabla;
-         DefaultTableModel tabla2;
+         DefaultTableModel tabla2=null;
     public FrmPrincipal() {
         initComponents();
     }
@@ -490,22 +490,33 @@ try{
     }//GEN-LAST:event_btnDeleteActionPerformed
 private void GuardarDatos() {  
         try {
-            
+         int estados[][];  
             if(tabla2!=null){
-       
-                        int estados[][]= new int[tabla2.getColumnCount()][tabla2.getColumnCount()];
-                        for (int i = 0; i < tabla2.getColumnCount(); i++) {
-                for (int j = 1; j < tabla2.getColumnCount()+1; j++) {
-                    if(tabla2.getValueAt(i, j-1)!=null){
-                       String x=(String) tabla2.getValueAt(i, j-1);
-                  estados[i][j]= Integer.parseInt(x);
+//     Matrix m= new Matrix();
+                estados    = new int[tabla2.getRowCount()][tabla2.getColumnCount()-1]; 
+                        for (int i = 0; i < tabla2.getRowCount(); i++) {
+                for (int j = 1; j < tabla2.getColumnCount(); j++) {
+                    if(tabla2.getValueAt(i, j)!=null){
+                       String x=(String) tabla2.getValueAt(i, j);
+                  estados[i][j-1]= Integer.parseInt(x);
+            
                     }
                 }
             }
+                        for (int i = 0; i < estados.length; i++) {
+                            for (int j = 0; j < estados.length; j++) {
+                                System.out.print(estados[i][j]);  
+                            }
+                            System.out.println("");
+                }
+              
+//                        arc.setMatriz(m);
+                        JOptionPane.showMessageDialog(this, "Guardado¡¡¡");
              }else{
-                m=null;
+                estados=null;
+                System.out.println("null-_-");
             }            
-            arc= new Archivo(lista, m);
+            arc= new Archivo(lista, estados);
             
             XMLEncoder o = new XMLEncoder(new FileOutputStream("Tokens"));
             o.writeObject(arc);
@@ -523,10 +534,23 @@ private void GuardarDatos() {
             ArrayList<Archivo> arch= new ArrayList<>();
      
            tabla= (DefaultTableModel) jTable1.getModel();
+           
            Object z=  i.readObject();
 //           lista= (ArrayList<Nodo>) arch.get(0).getLista();
          Archivo d=(Archivo) z;
+      
        lista= (ArrayList<Nodo>) d.getLista();
+       if(d.getMatriz()!=null){
+           System.out.println("Matriz¡¡¡");
+           int a[][]= (int[][]) d.getMatriz();
+             tabla2=(DefaultTableModel) tbldatos.getModel();
+             
+             for (int j = 0; j < tabla2.getRowCount(); j++) {
+                 for (int k = 1; k < tabla2.getColumnCount(); k++) {
+                 tabla2.setValueAt(a[j][k-1], j, k);
+                 }
+           }
+       }
 //              lista = (ArrayList<Nodo>) i.readObject();
                          llenartabla();
         } catch (Exception ex) {
@@ -600,7 +624,7 @@ Nodo siguiente=lista.get(abajo);
            llenartabla();
    }catch(Exception e){}
 }
-public void llenartabla(){
+public  void llenartabla(){
     try{
    removerfilas();
     for (int i = 0; i < lista.size(); i++) {

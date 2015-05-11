@@ -11,9 +11,7 @@ public int matriz[][];
         this.descripcion = descripcion;
         this.lexema = lexema;      
     }
-      public void pruebatortoise(){
-    int numeroaleatrio=4567890;
-}
+
    
     public String getDescripcion() {
         return descripcion;

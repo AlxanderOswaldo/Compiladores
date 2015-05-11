@@ -8,7 +8,7 @@ package modelo;
 
 
 public class Matrix {
-private int matriz[][];    
+public int matriz[][];    
 
     public Matrix() {
     }

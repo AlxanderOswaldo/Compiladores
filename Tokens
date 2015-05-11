@@ -6,17 +6,17 @@
     <void method="add">
      <object class="modelo.Nodo">
       <void property="descripcion">
-       <string>Numero</string>
+       <string>menos</string>
       </void>
       <void property="lexema">
-       <string>/^[0-9]+$/</string>
+       <string>-</string>
       </void>
      </object>
     </void>
     <void method="add">
      <object class="modelo.Nodo">
       <void property="descripcion">
-       <string>Mas</string>
+       <string>mas</string>
       </void>
       <void property="lexema">
        <string>+</string>
@@ -26,14 +26,39 @@
     <void method="add">
      <object class="modelo.Nodo">
       <void property="descripcion">
-       <string>Menos</string>
+       <string>Identificador</string>
       </void>
       <void property="lexema">
-       <string>-</string>
+       <string>alxx</string>
       </void>
      </object>
     </void>
    </object>
+  </void>
+  <void property="matriz">
+   <array class="[I" length="3">
+    <void index="0">
+     <array class="int" length="3">
+      <void index="0">
+       <int>1</int>
+      </void>
+     </array>
+    </void>
+    <void index="1">
+     <array class="int" length="3">
+      <void index="1">
+       <int>1</int>
+      </void>
+     </array>
+    </void>
+    <void index="2">
+     <array class="int" length="3">
+      <void index="1">
+       <int>1</int>
+      </void>
+     </array>
+    </void>
+   </array>
   </void>
  </object>
 </java>
