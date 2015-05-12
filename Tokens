@@ -36,25 +36,66 @@
    </object>
   </void>
   <void property="matriz">
-   <array class="[I" length="3">
+   <array class="[Ljava.lang.Object;" length="5">
     <void index="0">
-     <array class="int" length="3">
+     <array class="java.lang.Object" length="4">
       <void index="0">
-       <int>1</int>
+       <string></string>
+      </void>
+      <void index="1">
+       <string>menos</string>
+      </void>
+      <void index="2">
+       <string>mas</string>
+      </void>
+      <void index="3">
+       <string>Identificador</string>
       </void>
      </array>
     </void>
     <void index="1">
-     <array class="int" length="3">
+     <array class="java.lang.Object" length="4">
+      <void index="0">
+       <string>0</string>
+      </void>
       <void index="1">
-       <int>1</int>
+       <string></string>
+      </void>
+      <void index="2">
+       <string></string>
+      </void>
+      <void index="3">
+       <string>1</string>
       </void>
      </array>
     </void>
     <void index="2">
-     <array class="int" length="3">
+     <array class="java.lang.Object" length="4">
+      <void index="0">
+       <string>1</string>
+      </void>
+     </array>
+    </void>
+    <void index="3">
+     <array class="java.lang.Object" length="4">
+      <void index="0">
+       <int>2</int>
+      </void>
+      <void index="2">
+       <string>1</string>
+      </void>
+     </array>
+    </void>
+    <void index="4">
+     <array class="java.lang.Object" length="4">
+      <void index="0">
+       <string>3</string>
+      </void>
       <void index="1">
-       <int>1</int>
+       <string>1</string>
+      </void>
+      <void index="3">
+       <string></string>
       </void>
      </array>
     </void>
