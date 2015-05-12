@@ -7,6 +7,7 @@
 package vista;
 
 import java.util.ArrayList;
+import modelo.Compilador;
 import modelo.Nodo;
 
 /**
@@ -54,6 +55,11 @@ public class frmiCompilador extends javax.swing.JInternalFrame {
 
         btnEjecutar.setText("Play");
         btnEjecutar.setBorder(new javax.swing.border.MatteBorder(null));
+        btnEjecutar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEjecutarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -152,13 +158,19 @@ public class frmiCompilador extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void txaCodigoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txaCodigoKeyPressed
-        String codigo= txaCodigo.getText();
-        String tokens[]= codigo.split("[ |,|(|)|{|}]");
-        for (int i = 0; i < tokens.length; i++) {
-            System.out.println(tokens[i]);
-        }
-        System.out.println(tokens.length);
+//        String codigo= txaCodigo.getText();
+//        String tokens[]= codigo.split("[ |,|(|)|{|}]");
+//        for (int i = 0; i < tokens.length; i++) {
+//            System.out.println(tokens[i]);
+//        }
+//        System.out.println(tokens.length);
     }//GEN-LAST:event_txaCodigoKeyPressed
+
+    private void btnEjecutarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEjecutarActionPerformed
+        Compilador c = new Compilador();
+        c.iniciarTira(txaCodigo.getText());
+        txaLexico.setText(c.AnalisisLexico(lista));
+    }//GEN-LAST:event_btnEjecutarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

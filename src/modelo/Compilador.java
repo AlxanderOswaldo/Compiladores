@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 
 public class Compilador {
 
-    private List<NodoToken> lista = new ArrayList<>();
+    private List<Token> lista = new ArrayList<>();
     private String tira;
     private Lectura lectura;
     private MatrizTransicion matriz = new MatrizTransicion();
@@ -17,7 +17,7 @@ public class Compilador {
         lectura = new Lectura(tira);
     }
 
-    public List<NodoToken> getListaToken() {
+    public List<Token> getListaToken() {
         return lista;
     }
 
@@ -53,21 +53,59 @@ public class Compilador {
             } else {
                 nodo = new NodoToken(Token.ERROR, tokenActual);
             }
-            lista.add(nodo);
+//            lista.add(nodo);
         }
     }
+
     
-    public void analisisSintactico(){
-        if(lista.size()>0){
-            int estadoInicial = 0;
-            for (NodoToken t : lista) {
-                int estadoSiguiente = matriz.getSiguiente(estadoInicial, t.getToken());
-                if(estadoSiguiente == -1){
-                    System.out.println("ERROR DE SINTAXIS");
-                    return;
-                }
-                estadoInicial = estadoSiguiente;
+
+    public String AnalisisLexico(ArrayList<Nodo> token) {
+        String mensaje = "";
+
+ Pattern pat = Pattern.compile("[a-zA-Z_][a-zA-Z0-9_]*");
+        while (true) {
+            String tokenActual = lectura.getToken();
+            System.out.println(tokenActual);
+            if (tokenActual == null) {
+                break;
+            } 
+            boolean error=true;
+            boolean identificador=true;
+            if((tokenActual.trim().length()>0) &&(!tokenActual.trim().equals(" "))){
+            for (int i = 0; i < token.size(); i++) {
+                if (tokenActual.equals(token.get(i).getLexema())) {
+                    mensaje += token.get(i).getDescripcion() + "\t -> " + token.get(i).getLexema() + "\n";
+                    error=false;
+                    identificador=false;
+                    break;
+                                    } 
             }
+            if(identificador==true){
+                if (pat.matcher(tokenActual).matches()) {                
+                        mensaje += "Identificador" + "\t -> " + tokenActual + "\n"; 
+                        error=false;
+                        
+                }
+            }
+            if(error==true){
+                mensaje += "Error" + "\t -> " + tokenActual+ "\n";
+            }   
+        }
+        }
+        return mensaje;
+    }
+
+    public void analisisSintactico() {
+        if (lista.size() > 0) {
+            int estadoInicial = 0;
+//            for (Nodo t : lista) {
+//                int estadoSiguiente = matriz.getSiguiente(estadoInicial, t.getToken());
+//                if(estadoSiguiente == -1){
+//                    System.out.println("ERROR DE SINTAXIS");
+//                    return;
+//                }
+//                estadoInicial = estadoSiguiente;
+//            }
             System.out.println("CORRECTO");
         }
     }
@@ -76,10 +114,10 @@ public class Compilador {
         Compilador c = new Compilador();
         c.iniciarTira("public class Compilador private { ");
         c.analisisLexico();
-        List<NodoToken> ele = c.getListaToken();
-        for (NodoToken e : ele) {
-            System.out.println(Token.getDescripcion(e.getToken()) + "\t -> " + e.getLexema());
-        }
+//        List<NodoToken> ele = c.getListaToken();
+//        for (NodoToken e : ele) {
+//            System.out.println(Token.getDescripcion(e.getToken()) + "\t -> " + e.getLexema());
+//        }
         System.out.println("--------------------------------");
         c.analisisSintactico();
     }

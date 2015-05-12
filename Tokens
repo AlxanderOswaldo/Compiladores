@@ -33,6 +33,76 @@
       </void>
      </object>
     </void>
+    <void method="add">
+     <object class="modelo.Nodo">
+      <void property="descripcion">
+       <string>Public</string>
+      </void>
+      <void property="lexema">
+       <string>public</string>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="modelo.Nodo">
+      <void property="descripcion">
+       <string>Void</string>
+      </void>
+      <void property="lexema">
+       <string>void</string>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="modelo.Nodo">
+      <void property="descripcion">
+       <string>Clase</string>
+      </void>
+      <void property="lexema">
+       <string>class</string>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="modelo.Nodo">
+      <void property="descripcion">
+       <string>Llave_a</string>
+      </void>
+      <void property="lexema">
+       <string>{</string>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="modelo.Nodo">
+      <void property="descripcion">
+       <string>Llave_c</string>
+      </void>
+      <void property="lexema">
+       <string>}</string>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="modelo.Nodo">
+      <void property="descripcion">
+       <string>Parem_a</string>
+      </void>
+      <void property="lexema">
+       <string>(</string>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="modelo.Nodo">
+      <void property="descripcion">
+       <string>Parem_c</string>
+      </void>
+      <void property="lexema">
+       <string>)</string>
+      </void>
+     </object>
+    </void>
    </object>
   </void>
   <void property="matriz">
