@@ -6,50 +6,10 @@
     <void method="add">
      <object class="modelo.Nodo">
       <void property="descripcion">
-       <string>menos</string>
-      </void>
-      <void property="lexema">
-       <string>-</string>
-      </void>
-     </object>
-    </void>
-    <void method="add">
-     <object class="modelo.Nodo">
-      <void property="descripcion">
-       <string>mas</string>
-      </void>
-      <void property="lexema">
-       <string>+</string>
-      </void>
-     </object>
-    </void>
-    <void method="add">
-     <object class="modelo.Nodo">
-      <void property="descripcion">
-       <string>Identificador</string>
-      </void>
-      <void property="lexema">
-       <string>alxx</string>
-      </void>
-     </object>
-    </void>
-    <void method="add">
-     <object class="modelo.Nodo">
-      <void property="descripcion">
        <string>Public</string>
       </void>
       <void property="lexema">
        <string>public</string>
-      </void>
-     </object>
-    </void>
-    <void method="add">
-     <object class="modelo.Nodo">
-      <void property="descripcion">
-       <string>Void</string>
-      </void>
-      <void property="lexema">
-       <string>void</string>
       </void>
      </object>
     </void>
@@ -66,20 +26,20 @@
     <void method="add">
      <object class="modelo.Nodo">
       <void property="descripcion">
-       <string>Llave_a</string>
+       <string>Identificador</string>
       </void>
       <void property="lexema">
-       <string>{</string>
+       <string>alxx</string>
       </void>
      </object>
     </void>
     <void method="add">
      <object class="modelo.Nodo">
       <void property="descripcion">
-       <string>Llave_c</string>
+       <string>Llave_a</string>
       </void>
       <void property="lexema">
-       <string>}</string>
+       <string>{</string>
       </void>
      </object>
     </void>
@@ -103,69 +63,124 @@
       </void>
      </object>
     </void>
+    <void method="add">
+     <object class="modelo.Nodo">
+      <void property="descripcion">
+       <string>mas</string>
+      </void>
+      <void property="lexema">
+       <string>+</string>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="modelo.Nodo">
+      <void property="descripcion">
+       <string>menos</string>
+      </void>
+      <void property="lexema">
+       <string>-</string>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="modelo.Nodo">
+      <void property="descripcion">
+       <string>Void</string>
+      </void>
+      <void property="lexema">
+       <string>void</string>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="modelo.Nodo">
+      <void property="descripcion">
+       <string>Llave_c</string>
+      </void>
+      <void property="lexema">
+       <string>}</string>
+      </void>
+     </object>
+    </void>
    </object>
   </void>
   <void property="matriz">
    <array class="[Ljava.lang.Object;" length="5">
     <void index="0">
-     <array class="java.lang.Object" length="4">
+     <array class="java.lang.Object" length="11">
       <void index="0">
        <string></string>
       </void>
       <void index="1">
-       <string>menos</string>
+       <string>Public</string>
       </void>
       <void index="2">
-       <string>mas</string>
+       <string>Clase</string>
       </void>
       <void index="3">
        <string>Identificador</string>
       </void>
+      <void index="4">
+       <string>Llave_a</string>
+      </void>
+      <void index="5">
+       <string>Parem_a</string>
+      </void>
+      <void index="6">
+       <string>Parem_c</string>
+      </void>
+      <void index="7">
+       <string>mas</string>
+      </void>
+      <void index="8">
+       <string>menos</string>
+      </void>
+      <void index="9">
+       <string>Void</string>
+      </void>
+      <void index="10">
+       <string>Llave_c</string>
+      </void>
      </array>
     </void>
     <void index="1">
-     <array class="java.lang.Object" length="4">
+     <array class="java.lang.Object" length="11">
       <void index="0">
-       <string>0</string>
+       <int>0</int>
       </void>
       <void index="1">
-       <string></string>
-      </void>
-      <void index="2">
-       <string></string>
-      </void>
-      <void index="3">
        <string>1</string>
       </void>
      </array>
     </void>
     <void index="2">
-     <array class="java.lang.Object" length="4">
+     <array class="java.lang.Object" length="11">
       <void index="0">
-       <string>1</string>
+       <int>1</int>
+      </void>
+      <void index="2">
+       <string>2</string>
       </void>
      </array>
     </void>
     <void index="3">
-     <array class="java.lang.Object" length="4">
+     <array class="java.lang.Object" length="11">
       <void index="0">
        <int>2</int>
       </void>
-      <void index="2">
-       <string>1</string>
+      <void index="4">
+       <string>3</string>
       </void>
      </array>
     </void>
     <void index="4">
-     <array class="java.lang.Object" length="4">
+     <array class="java.lang.Object" length="11">
       <void index="0">
-       <string>3</string>
+       <int>3</int>
       </void>
-      <void index="1">
-       <string>1</string>
-      </void>
-      <void index="3">
-       <string></string>
+      <void index="10">
+       <string>4</string>
       </void>
      </array>
     </void>

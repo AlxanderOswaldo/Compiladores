@@ -95,7 +95,38 @@ public class Compilador {
         return mensaje;
     }
 
-    public void analisisSintactico() {
+    public void analisisSintactico(ArrayList<Nodo> lista, Object[][]matriz) {
+        if (lista.size() > 0) {
+            String estadoInicial = "0";
+            for (Nodo t : lista) {
+                String token=t.getLexema();
+                int columna = 0;
+                for (int i = 1; i <matriz[0].length; i++) {
+                   if(matriz[0][i].toString().equals(token)){
+                    columna=i;
+                   break;
+                   }
+                }
+                
+                 int fila = 0;
+                for (int i = 1; i <matriz.length; i++) {
+                   if(matriz[i][0].toString().equals(estadoInicial)){
+                    fila=i;
+                   break;
+                   }
+                }
+                       
+               String estadoSiguiente =  (String) matriz[fila][columna];
+                if(estadoSiguiente == null){
+                    System.out.println("ERROR DE SINTAXIS");
+                    return;
+                }
+                estadoInicial = estadoSiguiente;
+            }
+            System.out.println("CORRECTO");
+        }
+    }
+   public void AnalisisSintactico() {
         if (lista.size() > 0) {
             int estadoInicial = 0;
 //            for (Nodo t : lista) {
@@ -109,7 +140,6 @@ public class Compilador {
             System.out.println("CORRECTO");
         }
     }
-
     public static void main(String[] args) {
         Compilador c = new Compilador();
         c.iniciarTira("public class Compilador private { ");
@@ -119,7 +149,7 @@ public class Compilador {
 //            System.out.println(Token.getDescripcion(e.getToken()) + "\t -> " + e.getLexema());
 //        }
         System.out.println("--------------------------------");
-        c.analisisSintactico();
+//        c.analisisSintactico();
     }
 
 }

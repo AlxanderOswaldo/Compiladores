@@ -7,6 +7,7 @@
 package vista;
 
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import modelo.Compilador;
 import modelo.Nodo;
 
@@ -80,7 +81,7 @@ public class frmiCompilador extends javax.swing.JInternalFrame {
 
         txaCodigo.setColumns(20);
         txaCodigo.setRows(5);
-        txaCodigo.setBorder(new javax.swing.border.MatteBorder(null));
+        txaCodigo.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         txaCodigo.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txaCodigoKeyPressed(evt);
@@ -167,9 +168,15 @@ public class frmiCompilador extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txaCodigoKeyPressed
 
     private void btnEjecutarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEjecutarActionPerformed
-        Compilador c = new Compilador();
-        c.iniciarTira(txaCodigo.getText());
-        txaLexico.setText(c.AnalisisLexico(lista));
+       ArrayList<Nodo> lista= frmiGenerar.getLista();
+        if(lista.size()>0){         
+           Compilador c = new Compilador();
+        c.iniciarTira(txaCodigo.getText().replaceAll("\n", ""));
+                   txaLexico.setText(c.AnalisisLexico(lista));
+       }else{
+           JOptionPane.showMessageDialog(this, "Cargar tokens y matriz");
+       }
+        
     }//GEN-LAST:event_btnEjecutarActionPerformed
 
 
