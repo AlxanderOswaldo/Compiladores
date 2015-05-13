@@ -1,5 +1,6 @@
 package modelo;
 
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -10,7 +11,9 @@ public class Compilador {
     private String tira;
     private Lectura lectura;
     private MatrizTransicion matriz = new MatrizTransicion();
-
+//    int fila ;
+//           int columna ;
+private ArrayList<Nodo> listasintactico= new ArrayList<Nodo>();
     public void iniciarTira(String tira) {
         this.tira = tira;
         lista.clear();
@@ -75,14 +78,18 @@ public class Compilador {
             for (int i = 0; i < token.size(); i++) {
                 if (tokenActual.equals(token.get(i).getLexema())) {
                     mensaje += token.get(i).getDescripcion() + "\t -> " + token.get(i).getLexema() + "\n";
+                    Nodo n= new Nodo(token.get(i).getDescripcion(), tokenActual);
+                        getListasintactico().add(n);
                     error=false;
                     identificador=false;
                     break;
                                     } 
             }
             if(identificador==true){
-                if (pat.matcher(tokenActual).matches()) {                
-                        mensaje += "Identificador" + "\t -> " + tokenActual + "\n"; 
+                if (pat.matcher(tokenActual).matches()) {  
+                       Nodo n= new Nodo("ID", tokenActual);
+                        getListasintactico().add(n);
+                        mensaje += "ID" + "\t -> " + tokenActual + "\n"; 
                         error=false;
                         
                 }
@@ -95,36 +102,43 @@ public class Compilador {
         return mensaje;
     }
 
-    public void analisisSintactico(ArrayList<Nodo> lista, Object[][]matriz) {
+    public String analisisSintactico(ArrayList<Nodo> lista, Object[][]matriz) {
+        String mensaje="";
         if (lista.size() > 0) {
             String estadoInicial = "0";
-            for (Nodo t : lista) {
-                String token=t.getLexema();
-                int columna = 0;
-                for (int i = 1; i <matriz[0].length; i++) {
+                          for (int e = 0; e < lista.size(); e++) {
+                String token=lista.get(e).getDescripcion();
+                int columna=0;
+                         for (int i = 1; i <matriz[1].length; i++) {
                    if(matriz[0][i].toString().equals(token)){
                     columna=i;
                    break;
                    }
                 }
-                
-                 int fila = 0;
-                for (int i = 1; i <matriz.length; i++) {
+                         int fila=0;
+                                                 for (int i = 1; i <matriz.length; i++) {
                    if(matriz[i][0].toString().equals(estadoInicial)){
                     fila=i;
                    break;
                    }
-                }
-                       
-               String estadoSiguiente =  (String) matriz[fila][columna];
-                if(estadoSiguiente == null){
-                    System.out.println("ERROR DE SINTAXIS");
-                    return;
+                } 
+                                                 if((fila==0)||(columna==0)){
+                                                       mensaje+= "\"ERROR DE SINTAXIS\"";
+                                  return mensaje; 
+                                                 }
+               String estadoSiguiente =   matriz[fila][columna]+"";            
+                System.out.println("Estado siguiente----"+estadoSiguiente);
+                if((estadoSiguiente == null)||(estadoSiguiente.equals("0"))){
+                    mensaje+= "\"ERROR DE SINTAXIS\"";
+                                  return mensaje;
                 }
                 estadoInicial = estadoSiguiente;
+                
             }
-            System.out.println("CORRECTO");
+            mensaje+="\"CORRECTO\"";
         }
+        
+        return mensaje;
     }
    public void AnalisisSintactico() {
         if (lista.size() > 0) {
@@ -150,6 +164,14 @@ public class Compilador {
 //        }
         System.out.println("--------------------------------");
 //        c.analisisSintactico();
+    }
+
+    /**
+     * @return the listasintactico
+     */
+    public ArrayList<Nodo> getListasintactico() {
+       
+        return listasintactico;
     }
 
 }

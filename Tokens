@@ -26,10 +26,10 @@
     <void method="add">
      <object class="modelo.Nodo">
       <void property="descripcion">
-       <string>Identificador</string>
+       <string>ID</string>
       </void>
       <void property="lexema">
-       <string>alxx</string>
+       <string>[a-zA-Z_][a-zA-Z0-9_]*</string>
       </void>
      </object>
     </void>
@@ -46,27 +46,37 @@
     <void method="add">
      <object class="modelo.Nodo">
       <void property="descripcion">
-       <string>Parem_a</string>
+       <string>TD_Int</string>
       </void>
       <void property="lexema">
-       <string>(</string>
+       <string>int</string>
       </void>
      </object>
     </void>
     <void method="add">
      <object class="modelo.Nodo">
       <void property="descripcion">
-       <string>Parem_c</string>
+       <string>Entero</string>
       </void>
       <void property="lexema">
-       <string>)</string>
+       <string>/^[0-9]+$/</string>
       </void>
      </object>
     </void>
     <void method="add">
      <object class="modelo.Nodo">
       <void property="descripcion">
-       <string>mas</string>
+       <string>Igual</string>
+      </void>
+      <void property="lexema">
+       <string>=</string>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="modelo.Nodo">
+      <void property="descripcion">
+       <string>Mas</string>
       </void>
       <void property="lexema">
        <string>+</string>
@@ -76,20 +86,10 @@
     <void method="add">
      <object class="modelo.Nodo">
       <void property="descripcion">
-       <string>menos</string>
+       <string>Menos</string>
       </void>
       <void property="lexema">
        <string>-</string>
-      </void>
-     </object>
-    </void>
-    <void method="add">
-     <object class="modelo.Nodo">
-      <void property="descripcion">
-       <string>Void</string>
-      </void>
-      <void property="lexema">
-       <string>void</string>
       </void>
      </object>
     </void>
@@ -106,7 +106,7 @@
    </object>
   </void>
   <void property="matriz">
-   <array class="[Ljava.lang.Object;" length="5">
+   <array class="[Ljava.lang.Object;" length="6">
     <void index="0">
      <array class="java.lang.Object" length="11">
       <void index="0">
@@ -119,25 +119,25 @@
        <string>Clase</string>
       </void>
       <void index="3">
-       <string>Identificador</string>
+       <string>ID</string>
       </void>
       <void index="4">
        <string>Llave_a</string>
       </void>
       <void index="5">
-       <string>Parem_a</string>
+       <string>TD_Int</string>
       </void>
       <void index="6">
-       <string>Parem_c</string>
+       <string>Entero</string>
       </void>
       <void index="7">
-       <string>mas</string>
+       <string>Igual</string>
       </void>
       <void index="8">
-       <string>menos</string>
+       <string>Mas</string>
       </void>
       <void index="9">
-       <string>Void</string>
+       <string>Menos</string>
       </void>
       <void index="10">
        <string>Llave_c</string>
@@ -150,7 +150,7 @@
        <int>0</int>
       </void>
       <void index="1">
-       <string>1</string>
+       <string></string>
       </void>
      </array>
     </void>
@@ -159,8 +159,8 @@
       <void index="0">
        <int>1</int>
       </void>
-      <void index="2">
-       <string>2</string>
+      <void index="1">
+       <string></string>
       </void>
      </array>
     </void>
@@ -169,9 +169,6 @@
       <void index="0">
        <int>2</int>
       </void>
-      <void index="4">
-       <string>3</string>
-      </void>
      </array>
     </void>
     <void index="4">
@@ -179,8 +176,12 @@
       <void index="0">
        <int>3</int>
       </void>
-      <void index="10">
-       <string>4</string>
+     </array>
+    </void>
+    <void index="5">
+     <array class="java.lang.Object" length="11">
+      <void index="0">
+       <int>4</int>
       </void>
      </array>
     </void>

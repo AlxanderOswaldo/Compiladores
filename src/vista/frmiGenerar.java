@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package vista;
 
 import java.beans.XMLDecoder;
@@ -12,11 +11,11 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import modelo.Archivo;
 import modelo.Nodo;
-
 
 /**
  *
@@ -25,10 +24,11 @@ import modelo.Nodo;
 public class frmiGenerar extends javax.swing.JInternalFrame {
 
     Archivo arc;
-Object [][]m;
-    private static ArrayList<Nodo> lista= new ArrayList();
-      DefaultTableModel tabla;
-         DefaultTableModel tabla2=null;
+    private static Object[][] m;
+    private static ArrayList<Nodo> lista = new ArrayList();
+    DefaultTableModel tabla;
+    DefaultTableModel tabla2 = null;
+
     public frmiGenerar() {
         initComponents();
     }
@@ -385,38 +385,46 @@ Object [][]m;
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEnterosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnterosActionPerformed
+        txtDescripcion.setText("");
+        txtDescripcion.setText("Entero");
         txtExpresion.setText("");
         txtExpresion.setText("/^[0-9]+$/");
     }//GEN-LAST:event_btnEnterosActionPerformed
 
     private void btnDecimalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDecimalActionPerformed
+        txtDescripcion.setText("");
+        txtDescripcion.setText("Decimal");
         txtExpresion.setText("");
         txtExpresion.setText("/^-?[0-9]+([,\\.][0-9]*)?$/");
     }//GEN-LAST:event_btnDecimalActionPerformed
 
     private void btnIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIDActionPerformed
+        txtDescripcion.setText("");
+        txtDescripcion.setText("ID");
         txtExpresion.setText("");
         txtExpresion.setText("[a-zA-Z_][a-zA-Z0-9_]*");
     }//GEN-LAST:event_btnIDActionPerformed
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         for (int i = 0; i < getLista().size(); i++) {
-            if(getLista().get(i).getDescripcion().equals(txtDescripcion.getText())){
+            if (getLista().get(i).getDescripcion().equals(txtDescripcion.getText())) {
                 JOptionPane.showMessageDialog(this, "Ya existe la Descripción");
                 return;
             }
-            if(getLista().get(i).getLexema().equals(txtExpresion.getText())){
+            if (getLista().get(i).getLexema().equals(txtExpresion.getText())) {
                 JOptionPane.showMessageDialog(this, "Ya existe el Lexema");
                 return;
             }
         }
-        Nodo token= new Nodo(txtDescripcion.getText(), txtExpresion.getText());
+        Nodo token = new Nodo(txtDescripcion.getText(), txtExpresion.getText());
         getLista().add(token);
-        tabla= (DefaultTableModel) jTable1.getModel();
-        String fila[]=  new  String[2];
-        fila[0]=token.getDescripcion();
-        fila[1]=token.getLexema();
+        tabla = (DefaultTableModel) jTable1.getModel();
+        String fila[] = new String[2];
+        fila[0] = token.getDescripcion();
+        fila[1] = token.getLexema();
         tabla.addRow(fila);
+        txtDescripcion.setText("");
+        txtExpresion.setText("");
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInicioActionPerformed
@@ -436,7 +444,7 @@ Object [][]m;
     }//GEN-LAST:event_btnUltimoActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        int y =jTable1.getSelectedRow();
+        int y = jTable1.getSelectedRow();
         getLista().remove(y);
         llenartabla();
     }//GEN-LAST:event_btnDeleteActionPerformed
@@ -447,19 +455,19 @@ Object [][]m;
     }//GEN-LAST:event_btnClearActionPerformed
 
     private void btnGerenarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGerenarActionPerformed
-        if(txtNumEstados.getText().equals("")){
+        if (txtNumEstados.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Ingrese el # de Estados");
             return;
         }
-        try{
-            final int x= Integer.parseInt(txtNumEstados.getText());
+        try {
+            final int x = Integer.parseInt(txtNumEstados.getText());
             tabla2 = new DefaultTableModel() {
 
                 @Override
                 public boolean isCellEditable(int row, int column) {
                     //             return column == 0;
-                    if(column==0){
-                        return  false;
+                    if (column == 0) {
+                        return false;
                     }
                     return true;
                 }
@@ -480,82 +488,82 @@ Object [][]m;
             }
             tbldatos.setModel(tabla2);
             tbldatos.getColumnModel().getColumn(0).setCellRenderer(tbldatos.getTableHeader().getDefaultRenderer());
-        }catch(Exception e){}
+        } catch (Exception e) {
+        }
     }//GEN-LAST:event_btnGerenarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-      GuardarDatos();
+        GuardarDatos();
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnAbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAbrirActionPerformed
         CargarDatos();
     }//GEN-LAST:event_btnAbrirActionPerformed
-private void GuardarDatos() {  
+    private void GuardarDatos() {
         try {
-        Object estados[][];  
-            if(tabla2!=null){
-                estados    = new Object[tabla2.getRowCount()+1][tabla2.getColumnCount()]; 
-                for (int i = 0; i < tabla2.getColumnCount(); i++) {
-                     estados[0][i]=tabla2.getColumnName(i);
-                }
-                        for (int i = 0; i < tabla2.getRowCount(); i++) {                         
-                for (int j = 0; j < tabla2.getColumnCount(); j++) {
-                    if(tabla2.getValueAt(i, j)!=null){
-                     Object x= tabla2.getValueAt(i, j);
-                  estados[i+1][j]= x;
-            
+            if(getLista().size()>0){
+            JFileChooser jF1 = new JFileChooser();
+            String ruta = "";
+            if (jF1.showSaveDialog(null) == jF1.APPROVE_OPTION) {
+                ruta = jF1.getSelectedFile().getAbsolutePath();
+                Object estados[][];
+                if (tabla2 != null) {
+                    estados = new Object[tabla2.getRowCount() + 1][tabla2.getColumnCount()];
+                    for (int i = 0; i < tabla2.getColumnCount(); i++) {
+                        estados[0][i] = tabla2.getColumnName(i);
                     }
-                }
+                    for (int i = 0; i < tabla2.getRowCount(); i++) {
+                        for (int j = 0; j < tabla2.getColumnCount(); j++) {
+                            if (tabla2.getValueAt(i, j) != null) {
+                                Object x = tabla2.getValueAt(i, j);
+                                estados[i + 1][j] = x;
+
+                            }
+                        }
+                    }
+                    m = estados;
+
+                } else {
+                    estados = null;
+                                  }
+                arc = new Archivo(getLista(), estados);
+
+                XMLEncoder o = new XMLEncoder(new FileOutputStream(ruta));
+                o.writeObject(arc);
+                o.close();
+                JOptionPane.showMessageDialog(this, "Guardado¡¡¡");
             }
-                        m=estados;
-//                        for (int i = 0; i < estados.length; i++) {
-//                            for (int j = 0; j < estados[i].length; j++) {
-//                                System.out.print(estados[i][j]);  
-//                            }
-//                            System.out.println("");
-//                }
-                        JOptionPane.showMessageDialog(this, "Guardado¡¡¡");
-             }else{
-                estados=null;
-                System.out.println("null-_-");
-            }            
-            arc= new Archivo(getLista(), estados);
-            
-            XMLEncoder o = new XMLEncoder(new FileOutputStream("Tokens"));
-            o.writeObject(arc);
-            o.close();
-            
+        }else{
+         JOptionPane.showMessageDialog(null, "No hay nada que guardar","Error",JOptionPane.WARNING_MESSAGE);
+            }
         } catch (IOException ex) {
-            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error al Guardar el Archivo");
         }
+
     }
-    
-    //Cargar arrays de XML
+
     private void CargarDatos() {
         try {
-            XMLDecoder i = new XMLDecoder(new FileInputStream("Tokens"));
-            ArrayList<Archivo> arch= new ArrayList<>();
-     
-           tabla= (DefaultTableModel) jTable1.getModel();
-           
-           Object z=  i.readObject();
-         Archivo d=(Archivo) z;
-      
-       lista= (ArrayList<Nodo>) d.getLista();
-       if(d.getMatriz()!=null){
-           System.out.println("Matriz¡¡¡");
-           Object a[][]=  (Object[][]) d.getMatriz();
-          
-           System.out.println("l matriz es de--"+a.length);
-           for (int j = 0; j <a.length; j++) {
-               for (int k = 0; k < a[j].length; k++) {
-                   System.out.print(a[j][k]);
-               }
-               System.out.println("");
-           }
-            tabla2=(DefaultTableModel) tbldatos.getModel();
+            JFileChooser file = new JFileChooser();
+              if (file.showOpenDialog(null) == file.APPROVE_OPTION) {
+            XMLDecoder i = new XMLDecoder(new FileInputStream(file.getSelectedFile()));
+            ArrayList<Archivo> arch = new ArrayList<>();
+            tabla = (DefaultTableModel) jTable1.getModel();
+            Object z = i.readObject();
+            Archivo d = (Archivo) z;
+            lista = (ArrayList<Nodo>) d.getLista();
+            if (d.getMatriz() != null) {
+                Object a[][] = (Object[][]) d.getMatriz();
+                m = a;
+                System.out.println("l matriz es de--" + a.length);
+                for (int j = 0; j < a.length; j++) {
+                    for (int k = 0; k < a[j].length; k++) {
+                        System.out.print(a[j][k]);
+                    }
+                    System.out.println("");
+                }
+                tabla2 = (DefaultTableModel) tbldatos.getModel();
 
-   
 //                                  tabla2 = new DefaultTableModel() {                         
 //   @Override           
 //   public boolean isCellEditable(int row, int column) { 
@@ -565,133 +573,144 @@ private void GuardarDatos() {
 //       return true;    
 //   } 
 //};
-                                                    tabla2.setColumnCount(a[1].length);
-            tabla2.setRowCount(a.length-1);
-                Object[] etiquetas= new Object[a[1].length];
+                tabla2.setColumnCount(a[1].length);
+                tabla2.setRowCount(a.length - 1);
+                Object[] etiquetas = new Object[a[1].length];
                 for (int j = 0; j < a[1].length; j++) {
-               etiquetas[j]= a[0][j];
-           }
-               for (int j = 0; j < etiquetas.length; j++) {
-                   System.out.println(etiquetas[j]+"--etiquetas¡¡");
-           }
-               tabla2.setColumnIdentifiers(etiquetas);  
-             for (int j = 0; j < tabla2.getRowCount(); j++) {
-            
-                 for (int k = 0; k < tabla2.getColumnCount(); k++) {
-                 tabla2.setValueAt(a[j+1][k], j, k);
-                 }
-           }
-             tbldatos.getColumnModel().getColumn(0).setCellRenderer(tbldatos.getTableHeader().getDefaultRenderer());
-             tbldatos.setModel(tabla2);
-       }
+                    etiquetas[j] = a[0][j];
+                }
+                for (int j = 0; j < etiquetas.length; j++) {
+                    System.out.println(etiquetas[j] + "--etiquetas¡¡");
+                }
+                tabla2.setColumnIdentifiers(etiquetas);
+                for (int j = 0; j < tabla2.getRowCount(); j++) {
+
+                    for (int k = 0; k < tabla2.getColumnCount(); k++) {
+                        tabla2.setValueAt(a[j + 1][k], j, k);
+                    }
+                }
+                tbldatos.getColumnModel().getColumn(0).setCellRenderer(tbldatos.getTableHeader().getDefaultRenderer());
+                tbldatos.setModel(tabla2);
+            }
 //              lista = (ArrayList<Nodo>) i.readObject();
-                         llenartabla();
+            llenartabla();
+      }
         } catch (Exception ex) {
             ex.printStackTrace();
-            
+
         }
-       
+
     }
-   public void moveralinicio (){
-    try{
-  int tam=  getLista().size();
-    int y =jTable1.getSelectedRow();
-Nodo x=     getLista().get(y);
+
+    public void moveralinicio() {
+        try {
+            int tam = getLista().size();
+            int y = jTable1.getSelectedRow();
+            Nodo x = getLista().get(y);
             getLista().remove(y);
- Nodo[]aux= new Nodo[tam-1];
-        for (int i = 0; i < tam-1; i++) {
-          aux[i]=getLista().get(i);
-        }
-                
+            Nodo[] aux = new Nodo[tam - 1];
+            for (int i = 0; i < tam - 1; i++) {
+                aux[i] = getLista().get(i);
+            }
+
             getLista().clear();
             getLista().add(x);
-        for (int i = 0; i < tam-1; i++) {
+            for (int i = 0; i < tam - 1; i++) {
                 getLista().add(aux[i]);
-        }       
-   llenartabla();
-   }catch(Exception e){}
-}
-public void moveralfinal (){
-    try{
-  int tam=  getLista().size();
-    int y =jTable1.getSelectedRow();
-Nodo x=     getLista().get(y);
-            getLista().remove(y);
- Nodo[]aux= new Nodo[tam-1];
-        for (int i = 0; i < tam-1; i++) {
-          aux[i]=getLista().get(i);
-        }              
-            getLista().clear();
-        for (int i = 0; i < tam-1; i++) {
-                getLista().add(aux[i]);
+            }
+            llenartabla();
+        } catch (Exception e) {
         }
+    }
+
+    public void moveralfinal() {
+        try {
+            int tam = getLista().size();
+            int y = jTable1.getSelectedRow();
+            Nodo x = getLista().get(y);
+            getLista().remove(y);
+            Nodo[] aux = new Nodo[tam - 1];
+            for (int i = 0; i < tam - 1; i++) {
+                aux[i] = getLista().get(i);
+            }
+            getLista().clear();
+            for (int i = 0; i < tam - 1; i++) {
+                getLista().add(aux[i]);
+            }
             getLista().add(x);
-           llenartabla();
-   }catch(Exception e){}
-}
-public void anterior (){
-    try{
-    int y =jTable1.getSelectedRow();
-    int x=y-1;
-Nodo actual=getLista().get(y);
-Nodo anterior=getLista().get(y-1);
+            llenartabla();
+        } catch (Exception e) {
+        }
+    }
+
+    public void anterior() {
+        try {
+            int y = jTable1.getSelectedRow();
+            int x = y - 1;
+            Nodo actual = getLista().get(y);
+            Nodo anterior = getLista().get(y - 1);
             getLista().remove(y);
             getLista().remove(x);
             getLista().add(x, actual);
             getLista().add(y, anterior);
-           llenartabla();
-   }catch(Exception e){}
-}
-public void siguiente (){
-    try{
-    int arriba =jTable1.getSelectedRow();
-    int abajo=arriba+1;
-Nodo actual=getLista().get(arriba);
-Nodo siguiente=getLista().get(abajo);
+            llenartabla();
+        } catch (Exception e) {
+        }
+    }
+
+    public void siguiente() {
+        try {
+            int arriba = jTable1.getSelectedRow();
+            int abajo = arriba + 1;
+            Nodo actual = getLista().get(arriba);
+            Nodo siguiente = getLista().get(abajo);
             getLista().remove(arriba);
             getLista().add(arriba, siguiente);
             getLista().remove(abajo);
-            getLista().add(abajo,actual);
+            getLista().add(abajo, actual);
 
-
-           llenartabla();
-   }catch(Exception e){}
-}
-public  void llenartabla(){
-    try{
-   removerfilas();
-    for (int i = 0; i < getLista().size(); i++) {
-      String fila[]=  new  String[2]; 
-        fila[0]=getLista().get(i).getDescripcion();
-        fila[1]=getLista().get(i).getLexema();
-        tabla.addRow(fila);
+            llenartabla();
+        } catch (Exception e) {
+        }
     }
-      
-   }catch(Exception e){} 
-}
-public void removerfilas(){
-     try {
-            DefaultTableModel modelo=(DefaultTableModel) jTable1.getModel();
-            int filas=jTable1.getRowCount();
-            for (int i = 0;filas>i; i++) {
-                modelo.removeRow(0);
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error al limpiar la tabla.");
-        }
-}
 
-public void removerfilasb(){
-     try {
-            DefaultTableModel modelo=(DefaultTableModel) tbldatos.getModel();
-            int filas=tbldatos.getRowCount();
-            for (int i = 0;filas>i; i++) {
+    public void llenartabla() {
+        try {
+            removerfilas();
+            for (int i = 0; i < getLista().size(); i++) {
+                String fila[] = new String[2];
+                fila[0] = getLista().get(i).getDescripcion();
+                fila[1] = getLista().get(i).getLexema();
+                tabla.addRow(fila);
+            }
+
+        } catch (Exception e) {
+        }
+    }
+
+    public void removerfilas() {
+        try {
+            DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+            int filas = jTable1.getRowCount();
+            for (int i = 0; filas > i; i++) {
                 modelo.removeRow(0);
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error al limpiar la tabla.");
         }
-}
+    }
+
+    public void removerfilasb() {
+        try {
+            DefaultTableModel modelo = (DefaultTableModel) tbldatos.getModel();
+            int filas = tbldatos.getRowCount();
+            for (int i = 0; filas > i; i++) {
+                modelo.removeRow(0);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al limpiar la tabla.");
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem btnAbrir;
@@ -727,8 +746,14 @@ public void removerfilasb(){
     private javax.swing.JTextField txtNumEstados;
     // End of variables declaration//GEN-END:variables
 
-public static ArrayList<Nodo> getLista() {
+    public static ArrayList<Nodo> getLista() {
         return lista;
     }
-}
 
+    /**
+     * @return the m
+     */
+    public static Object[][] getM() {
+        return m;
+    }
+}

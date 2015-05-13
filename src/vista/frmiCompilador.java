@@ -9,6 +9,7 @@ package vista;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import modelo.Compilador;
+import modelo.Lectura;
 import modelo.Nodo;
 
 /**
@@ -20,9 +21,9 @@ public class frmiCompilador extends javax.swing.JInternalFrame {
     ArrayList<Nodo> lista= frmiGenerar.getLista();
     public frmiCompilador() {
         initComponents();
-        for (int i = 0; i < lista.size(); i++) {
-            System.out.println(lista.get(i).getDescripcion()+"---lista cargada¡¡");
-        }
+//        for (int i = 0; i < lista.size(); i++) {
+//            System.out.println(lista.get(i).getDescripcion()+"---lista cargada¡¡");
+//        }
     }
 
    
@@ -169,16 +170,32 @@ public class frmiCompilador extends javax.swing.JInternalFrame {
 
     private void btnEjecutarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEjecutarActionPerformed
        ArrayList<Nodo> lista= frmiGenerar.getLista();
+       Object [][]matriz=frmiGenerar.getM();
         if(lista.size()>0){         
            Compilador c = new Compilador();
         c.iniciarTira(txaCodigo.getText().replaceAll("\n", ""));
                    txaLexico.setText(c.AnalisisLexico(lista));
+           txaSintactico.setText(c.analisisSintactico(c.getListasintactico(), matriz)); 
        }else{
            JOptionPane.showMessageDialog(this, "Cargar tokens y matriz");
        }
         
     }//GEN-LAST:event_btnEjecutarActionPerformed
-
+public ArrayList<Nodo> getLista(){
+     ArrayList<Nodo> a;
+   
+       Lectura l= new Lectura(txaCodigo.getText().replaceAll("\n", ""));
+    while (true) {
+          Nodo x;
+            String tokenActual = l.getToken();
+                      if (tokenActual == null) {
+                break;
+            }
+           x= new Nodo(title, tokenActual);
+    }
+        return null;
+  
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem btnAbrir;
