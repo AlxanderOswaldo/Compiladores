@@ -128,7 +128,7 @@ private ArrayList<Nodo> listasintactico= new ArrayList<Nodo>();
                                                  }
                String estadoSiguiente =   matriz[fila][columna]+"";            
                 System.out.println("Estado siguiente----"+estadoSiguiente);
-                if((estadoSiguiente == null)||(estadoSiguiente.equals("0"))){
+                if((estadoSiguiente == null)||(estadoSiguiente == " ")||(estadoSiguiente.equals("0"))){
                     mensaje+= "\"ERROR DE SINTAXIS\"";
                                   return mensaje;
                 }

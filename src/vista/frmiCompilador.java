@@ -18,8 +18,19 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.IDN;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultHighlighter;
+import javax.swing.text.DefaultStyledDocument;
+import javax.swing.text.Highlighter;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyleContext;
 import modelo.Compilador;
 import modelo.Lectura;
 import modelo.Nodo;
@@ -32,14 +43,23 @@ public class frmiCompilador extends javax.swing.JInternalFrame {
 
     ArrayList<Nodo> lista= frmiGenerar.getLista();
     ArrayList<Object> archivos= new ArrayList<>();
+      ArrayList<Nodo> listasintactico;
+      Lectura l;
+       String []reservadas= {"public","class","void"};
+        DefaultStyledDocument doc;
+        StyleContext sc = new StyleContext();
+                Style rojo = sc.addStyle("ConstantWidth", null);
+               
     public frmiCompilador() {
-        
+       
         initComponents();
         leerlistaarchivo();
         mostrarlisaarchivos();
-        
-txaCodigo.setBackground(Color.BLACK);
-txaCodigo.setForeground(Color.WHITE);
+         StyleConstants.setForeground(rojo, Color.red);
+  
+           doc= new DefaultStyledDocument(sc);
+           txpCodigo.setDocument(doc);              
+    
     }
 
    
@@ -54,14 +74,14 @@ txaCodigo.setForeground(Color.WHITE);
         btnEjecutar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         lstArchivos = new javax.swing.JList();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        txaCodigo = new javax.swing.JTextArea();
         jScrollPane3 = new javax.swing.JScrollPane();
         txaLexico = new javax.swing.JTextArea();
         jScrollPane4 = new javax.swing.JScrollPane();
         txaSintactico = new javax.swing.JTextArea();
         jScrollPane5 = new javax.swing.JScrollPane();
         jTextArea4 = new javax.swing.JTextArea();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        txpCodigo = new javax.swing.JTextPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         btnAbrir = new javax.swing.JMenuItem();
@@ -105,7 +125,7 @@ txaCodigo.setForeground(Color.WHITE);
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(262, 262, 262)
                 .addComponent(btnEjecutar, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(368, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -121,16 +141,6 @@ txaCodigo.setForeground(Color.WHITE);
         });
         jScrollPane1.setViewportView(lstArchivos);
 
-        txaCodigo.setColumns(20);
-        txaCodigo.setRows(5);
-        txaCodigo.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
-        txaCodigo.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txaCodigoKeyPressed(evt);
-            }
-        });
-        jScrollPane2.setViewportView(txaCodigo);
-
         txaLexico.setColumns(20);
         txaLexico.setRows(5);
         txaLexico.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Análisis Léxico", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Agency FB", 1, 18))); // NOI18N
@@ -145,6 +155,13 @@ txaCodigo.setForeground(Color.WHITE);
         jTextArea4.setRows(5);
         jTextArea4.setBorder(javax.swing.BorderFactory.createTitledBorder("Errores"));
         jScrollPane5.setViewportView(jTextArea4);
+
+        txpCodigo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txpCodigoKeyReleased(evt);
+            }
+        });
+        jScrollPane6.setViewportView(txpCodigo);
 
         jMenu1.setText("Archivo");
 
@@ -182,8 +199,8 @@ txaCodigo.setForeground(Color.WHITE);
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jScrollPane5))
-                    .addComponent(jScrollPane2)
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 296, Short.MAX_VALUE))
+                    .addComponent(jScrollPane6)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
@@ -194,12 +211,12 @@ txaCodigo.setForeground(Color.WHITE);
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jScrollPane5, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE)))
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 209, Short.MAX_VALUE)))
                     .addComponent(jScrollPane1))
                 .addContainerGap())
         );
@@ -207,23 +224,18 @@ txaCodigo.setForeground(Color.WHITE);
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txaCodigoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txaCodigoKeyPressed
-//        String codigo= txaCodigo.getText();
-//        String tokens[]= codigo.split("[ |,|(|)|{|}]");
-//        for (int i = 0; i < tokens.length; i++) {
-//            System.out.println(tokens[i]);
-//        }
-//        System.out.println(tokens.length);
-    }//GEN-LAST:event_txaCodigoKeyPressed
-
     private void btnEjecutarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEjecutarActionPerformed
        ArrayList<Nodo> lista= frmiGenerar.getLista();
        Object [][]matriz=frmiGenerar.getM();
         if(lista.size()>0){         
            Compilador c = new Compilador();
-        c.iniciarTira(txaCodigo.getText().replaceAll("\n", ""));
+           listasintactico=c.getListasintactico();
+        c.iniciarTira(txpCodigo.getText().replaceAll("[\n\r]"," "));
                    txaLexico.setText(c.AnalisisLexico(lista));
            txaSintactico.setText(c.analisisSintactico(c.getListasintactico(), matriz)); 
+//            for (int i = 0; i < c.getListasintactico().size(); i++) {
+//                 System.out.println(c.getListasintactico().get(i).getLexema()+" se deben colorearr¡¡¡");
+//            }
        }else{
            JOptionPane.showMessageDialog(this, "Cargar tokens y matriz");
        }
@@ -243,7 +255,7 @@ txaCodigo.setForeground(Color.WHITE);
    /*guardamos el archivo y le damos el formato directamente,
     * si queremos que se guarde en formato doc lo definimos como .doc*/
     FileWriter  save=new FileWriter(guarda+".txt");
-    save.write(txaCodigo.getText());
+    save.write(txpCodigo.getText());
     save.close();
     String dir=guarda+"";
     archivos.add(dir);
@@ -300,7 +312,7 @@ public void mostrarlisaarchivos(){
       }
          lee.close();
     }
-    txaCodigo.setText(texto);
+    txpCodigo.setText(texto);
    }
    catch(IOException ex){
      JOptionPane.showMessageDialog(null,ex+"" +
@@ -328,6 +340,7 @@ public void mostrarlisaarchivos(){
 
     private void poupAbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_poupAbrirActionPerformed
        String dir= (String) lstArchivos.getSelectedValue();
+        System.out.println(dir);
          String aux="";   
   String texto="";
   try{
@@ -342,7 +355,7 @@ public void mostrarlisaarchivos(){
       }
          lee.close();
     }
-    txaCodigo.setText(texto);
+    txpCodigo.setText(texto);
    }
    catch(IOException ex){
      JOptionPane.showMessageDialog(null,ex+"" +
@@ -352,26 +365,67 @@ public void mostrarlisaarchivos(){
     }//GEN-LAST:event_poupAbrirActionPerformed
 
     private void popupCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_popupCerrarActionPerformed
-        System.out.println(lstArchivos.size()+"lista");
-        System.out.println(lstArchivos.getSelectedIndex()+"---index");
-        int x= lstArchivos.getSelectedIndex();
-        lstArchivos.remove(x);
+              int x= lstArchivos.getSelectedIndex();
+             archivos.remove(x);
+             lstArchivos.setListData(archivos.toArray());
     }//GEN-LAST:event_popupCerrarActionPerformed
-public ArrayList<Nodo> getLista(){
-     ArrayList<Nodo> a;
-   
-       Lectura l= new Lectura(txaCodigo.getText().replaceAll("\n", ""));
-    while (true) {
-          Nodo x;
+
+          
+    private void txpCodigoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txpCodigoKeyReleased
+       if(txpCodigo.getText().length()>0){
+        
+          l= new Lectura(txpCodigo.getText().replaceAll("[\n\r]"," "));
+         while (true) {
             String tokenActual = l.getToken();
-                      if (tokenActual == null) {
+            if (tokenActual == null) {
                 break;
             }
-           x= new Nodo(title, tokenActual);
-    }
-        return null;
-  
-}
+             btnEjecutarActionPerformed(null);
+             for (int i = 0; i < reservadas.length; i++) {
+                 
+             Pattern p= Pattern.compile("^"+reservadas[i]+"$");
+//             if(p.matcher(reservadas[i]).matches()){
+//                 
+//             }
+                        Matcher m = p.matcher(txpCodigo.getText().replaceAll("[\n\r]"," "));
+                        while(m.find()){
+                             doc.setCharacterAttributes(m.start(), m.end(), rojo, false);
+                        }
+             }
+            
+//               for (int i = 0; i <listasintactico.size() ; i++) {
+//                 for (int j = 0; j < reservadas.length; j++) {
+//                  if(reservadas[j].equals(listasintactico.get(i).getLexema())){
+//                       Pattern p= Pattern.compile(reservadas[j]);
+//                        Matcher m = p.matcher(txpCodigo.getText().replaceAll("[\n\r]"," "));
+//                        while(m.find()){
+//                             doc.setCharacterAttributes(m.start(), m.end(), rojo, false);
+//                        }
+//                      System.out.println(listasintactico.get(i).getLexema()+"---se debe colorer");
+////                      doc.setCharacterAttributes(0, 4, rojo, false);
+//                                       }
+//                 }
+//             }
+            
+         }
+       }
+        
+        
+        
+    }//GEN-LAST:event_txpCodigoKeyReleased
+//public ArrayList<Nodo> getLista(){
+//     ArrayList<Nodo> a; 
+//       Lectura l= new Lectura(txpCodigo.getText().replaceAll("\n", ""));
+//    while (true) {
+//          Nodo x;
+//            String tokenActual = l.getToken();
+//                      if (tokenActual == null) {
+//                break;
+//            }
+//           x= new Nodo(title, tokenActual);
+//    }
+//        return null; 
+//}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem btnAbrir;
@@ -382,16 +436,16 @@ public ArrayList<Nodo> getLista(){
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JTextArea jTextArea4;
     private javax.swing.JList lstArchivos;
     private javax.swing.JMenuItem popupCerrar;
     private javax.swing.JMenuItem poupAbrir;
-    private javax.swing.JTextArea txaCodigo;
     private javax.swing.JTextArea txaLexico;
     private javax.swing.JTextArea txaSintactico;
+    private javax.swing.JTextPane txpCodigo;
     // End of variables declaration//GEN-END:variables
 }

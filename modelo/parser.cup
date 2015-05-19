@@ -1,0 +1,120 @@
+package modelo;
+import java_cup.runtime.*; 
+
+
+action code {: 
+/*CODIGO DE JAVA*/ 
+:}; 
+
+parser code {: 
+  public static void main(String args[]) throws Exception { 
+  new parser(new Lexico(System.in)).parse(); 
+    } 
+
+public void report_error(String message, Object info) {
+    StringBuffer m = new StringBuffer("Error ");
+
+    if (info instanceof java_cup.runtime.Symbol) 
+      m.append( "("+info.toString()+")" );
+     
+    m.append(" : "+message);
+    System.out.println(m); 
+   
+  }
+  
+  public void report_fatal_error(String message, Object info) {
+    report_error(message, info);
+    throw new RuntimeException("Fatal Syntax Error");
+  }
+:};
+ 
+terminal PUBLIC; 
+terminal CLASS; 
+terminal STATIC;
+terminal VOID; 
+terminal MAIN; 
+terminal INT, DOUBLE, STRING; // tipo_de_dato
+terminal IF, ELSE, FOR, WHILE; // bucles
+terminal PABIERTO, PCERRADO, LABIERTA, LCERRADA, CORCHETES, PUNTOCOMA, COMA; // separators
+terminal ASIGNACION, MAYOR, MENOR, OPUESTO, IGUAL, MENORIGUAL, MAYORIGUAL, DIFERENTE, Y, O, INCREMENTO, DISMINUCION, MAS, MENOS, MULTIPLICACION, DIVISION, MASIGUAL, MENOSIGUAL; // operators
+
+terminal int ENTERO;
+terminal java.lang.Number DECIMAL;
+terminal java.lang.String CADENA;
+terminal java.lang.String IDENTIFICADOR; // name
+
+non terminal Programa, BloqueSentencias, Sentencias, Variables, Tipo, Sentencia, Variable;
+non terminal Declaracion, Todos, Decimal1, OperacionEntero, OperacionDecimal, OperacionCadena, Opera, OperaEditado; 
+non terminal Operaciones, Declara, MasNada, Inicializa, Incre, Asig, Ope, Comp, Comparacion;
+non terminal Dif, Yyoo, Comp12, Comp1, Comp2, SentIf, SentIf1, SentIf2, SentFor, SentWhile, NecesitaFor;
+
+
+
+start with Programa;
+
+Programa ::= PUBLIC CLASS IDENTIFICADOR LABIERTA PUBLIC STATIC VOID MAIN PABIERTO STRING CORCHETES IDENTIFICADOR PCERRADO LABIERTA BloqueSentencias LCERRADA LCERRADA;
+BloqueSentencias ::= Sentencias | Variables |;
+Sentencias ::= Sentencias Sentencia | Sentencia;
+Variables ::= Variables Variable | Variable;
+Tipo ::= INT | DOUBLE | STRING;
+Sentencia ::= SentIf | SentFor | SentWhile;
+Variable ::= Declaracion | Inicializa | Ope;
+Declaracion ::= Tipo Declara PUNTOCOMA;
+Todos ::= ENTERO | DECIMAL | CADENA;
+OperacionEntero ::= ENTERO Operaciones OperacionEntero | ENTERO;
+OperacionDecimal ::= DECIMAL Operaciones OperacionDecimal | DECIMAL;
+OperacionCadena ::= CADENA MAS OperacionCadena | CADENA;
+Opera ::= OperacionEntero | OperacionDecimal | OperacionCadena;
+OperaEditado ::= OperacionEntero | OperacionDecimal;
+Operaciones ::= MAS | MENOS | MULTIPLICACION | DIVISION;
+Declara ::= 
+                IDENTIFICADOR COMA Declara
+        |       IDENTIFICADOR
+        |       IDENTIFICADOR ASIGNACION Opera COMA Declara 
+        |       IDENTIFICADOR ASIGNACION Opera;
+
+MasNada ::= MASIGUAL | ASIGNACION;
+Inicializa ::= 
+                IDENTIFICADOR MasNada Opera PUNTOCOMA 
+        |       IDENTIFICADOR MENOSIGUAL OperaEditado PUNTOCOMA;
+
+Incre ::= INCREMENTO | DISMINUCION;
+Asig ::= 
+                Incre IDENTIFICADOR
+        |       IDENTIFICADOR Incre;        
+Ope ::= 
+                IDENTIFICADOR ASIGNACION Asig PUNTOCOMA
+        |       Asig PUNTOCOMA;
+
+Comp ::= IGUAL | MENORIGUAL | MAYORIGUAL | MAYOR | MENOR | DIFERENTE;
+Comparacion ::= Opera Comp Opera;
+Dif ::= OPUESTO | ;
+Yyoo ::= Y | O;
+Comp12 ::= 
+            Comparacion Yyoo Comp12
+       |    Comparacion;
+Comp1 ::= 
+            Dif PABIERTO Comparacion Yyoo Comp12 PCERRADO
+       |    Dif PABIERTO Comparacion PCERRADO
+       |    Comparacion;
+
+Comp2 ::= 
+            Comp1 Yyoo Comp2
+       |    Comp1;
+
+SentIf1 ::= IF PABIERTO Comp2 PCERRADO LABIERTA Variables LCERRADA;
+
+SentIf ::=
+            SentIf1
+       |    SentIf1 ELSE SentIf2;
+
+SentIf2 ::= 
+            SentIf1
+       |    SentIf1 ELSE SentIf2
+       |    LABIERTA Variables LCERRADA;
+
+SentWhile ::= WHILE PABIERTO Comp2 PCERRADO LABIERTA Variables LCERRADA;
+
+NecesitaFor ::= Inicializa | Asig;
+SentFor ::= FOR PABIERTO Tipo IDENTIFICADOR ASIGNACION Todos PUNTOCOMA Comp2 PUNTOCOMA NecesitaFor PCERRADO LABIERTA Variables LCERRADA;
+
