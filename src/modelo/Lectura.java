@@ -20,11 +20,12 @@ public class Lectura {
     private String leerToken() {
         eliminarEspacios();
         String retorno = "";
-        String separadores = "+-*/{},.;=[]&| ()<>'#";
+         String separadores = "+-*/{},.;=[]&| ()<>#";
+//              String separadores = "+-*/{},.;=[]&| ()<>'#";
         while (pos < cadena.length()
                 && separadores.indexOf("" + cadena.charAt(pos)) < 0) {
             retorno = retorno + cadena.charAt(pos);
-            pos++;
+            pos++;  
         }
         if (pos < cadena.length() && retorno.equals("")) {
             retorno = "" + cadena.charAt(pos);

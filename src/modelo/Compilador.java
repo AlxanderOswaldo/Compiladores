@@ -66,6 +66,9 @@ private ArrayList<Nodo> listasintactico= new ArrayList<Nodo>();
         String mensaje = "";
 
  Pattern pat = Pattern.compile("[a-zA-Z_][a-zA-Z0-9_]*");
+  Pattern patenteros = Pattern.compile("\\d*");
+  Pattern patdeci = Pattern.compile("^-?[0-9]+([,\\.][0-9]*)?$");
+          Pattern patdatoString=Pattern.compile("^'.[a-zA-Z0-9_]*'$");
         while (true) {
             String tokenActual = lectura.getToken();
             System.out.println(tokenActual);
@@ -74,7 +77,11 @@ private ArrayList<Nodo> listasintactico= new ArrayList<Nodo>();
             } 
             boolean error=true;
             boolean identificador=true;
-            if((tokenActual.trim().length()>0) &&(!tokenActual.trim().equals(" "))){
+            boolean entero=true;
+            boolean decimal=true;
+            boolean datoString=true;
+//           
+            if((tokenActual.trim().length()>0)  &&(!tokenActual.trim().equals(" "))){
             for (int i = 0; i < token.size(); i++) {
                 if (tokenActual.equals(token.get(i).getLexema())) {
                     mensaje += token.get(i).getDescripcion() + "\t -> " + token.get(i).getLexema() + "\n";
@@ -82,6 +89,9 @@ private ArrayList<Nodo> listasintactico= new ArrayList<Nodo>();
                         getListasintactico().add(n);
                     error=false;
                     identificador=false;
+                    entero=false;
+                    decimal=false;
+                    datoString=false;
                     break;
                                     } 
             }
@@ -91,8 +101,38 @@ private ArrayList<Nodo> listasintactico= new ArrayList<Nodo>();
                         getListasintactico().add(n);
                         mensaje += "ID" + "\t -> " + tokenActual + "\n"; 
                         error=false;
-                        
+                        entero=false;
+                        decimal=false;
+                          datoString=false;
                 }
+            }
+            if(datoString==true){
+                if (patdatoString.matcher(tokenActual).matches()) {  
+                       Nodo n= new Nodo("DatoString", tokenActual);
+                        getListasintactico().add(n);
+                        mensaje += "DatoString" + "\t -> " + tokenActual + "\n"; 
+                        error=false;
+                        entero=false;
+                        decimal=false;
+                         
+                }
+            }
+            if(entero==true){
+                if(patenteros.matcher(tokenActual).matches()){
+                    Nodo n= new Nodo("Entero", tokenActual);
+                        getListasintactico().add(n);
+                        mensaje += "Entero" + "\t -> " + tokenActual + "\n"; 
+                        error=false;
+                        decimal=false;
+                }
+            }
+            if(decimal==true){
+                if(patdeci.matcher(tokenActual).matches()){
+                    Nodo n= new Nodo("Decimal", tokenActual);
+                        getListasintactico().add(n);
+                        mensaje += "Decimal" + "\t -> " + tokenActual + "\n"; 
+                        error=false;
+                                        }
             }
             if(error==true){
                 mensaje += "Error" + "\t -> " + tokenActual+ "\n";

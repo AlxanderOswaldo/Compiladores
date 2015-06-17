@@ -5,6 +5,12 @@
  */
 package vista;
 
+import Graficador.Arista;
+import Graficador.Coordenadas;
+import Graficador.Enlace;
+import Graficador.Grafo;
+import Graficador.LineaQuebrada;
+import Graficador.NodoG;
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.FileInputStream;
@@ -15,22 +21,32 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import modelo.Archivo;
+import modelo.Automata;
+import modelo.Conjunto;
+import modelo.Estado;
 import modelo.Nodo;
+
 
 /**
  *
  * @author alxx_pc
  */
 public class frmiGenerar extends javax.swing.JInternalFrame {
-
+ Grafo grafo = new Grafo();
     Archivo arc;
     private static Object[][] m;
     private static ArrayList<Nodo> lista = new ArrayList();
     DefaultTableModel tabla;
-    DefaultTableModel tabla2 = null;
-
+    DefaultTableModel tabla2 =null;
+ ArrayList<String> simbolos = new ArrayList<>();
+  String dato[];
+    String madyacencia[][];
     public frmiGenerar() {
         initComponents();
+        tbldatos.getTableHeader().setReorderingAllowed(false);
+        jTable1.getTableHeader().setReorderingAllowed(false);
+        tabla2=null;
+       btnDibujar.setEnabled(false);
     }
 
     /**
@@ -69,6 +85,11 @@ public class frmiGenerar extends javax.swing.JInternalFrame {
         btnGerenar = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         tbldatos = new javax.swing.JTable();
+        jPanel5 = new javax.swing.JPanel();
+        jPanel6 = new javax.swing.JPanel();
+        btnLimpiar = new javax.swing.JButton();
+        btnDibujarGrafo = new javax.swing.JButton();
+        btnDibujar = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         btnGuardar = new javax.swing.JMenuItem();
@@ -112,22 +133,22 @@ public class frmiGenerar extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnEnteros)
+                .addComponent(btnEnteros, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
-                .addComponent(btnDecimal)
+                .addComponent(btnDecimal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnID)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(btnID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(405, 405, 405))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(12, Short.MAX_VALUE)
+                .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(btnEnteros)
-                    .addComponent(btnDecimal)
-                    .addComponent(btnID))
+                    .addComponent(btnDecimal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -219,7 +240,7 @@ public class frmiGenerar extends javax.swing.JInternalFrame {
                 .addGap(18, 18, 18)
                 .addComponent(btnUltimo)
                 .addGap(18, 18, 18)
-                .addComponent(btnDelete, javax.swing.GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE))
+                .addComponent(btnDelete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         btnClear.setText("Clear");
@@ -237,10 +258,10 @@ public class frmiGenerar extends javax.swing.JInternalFrame {
                 .addGap(23, 23, 23)
                 .addComponent(btnClear)
                 .addGap(34, 34, 34)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(205, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addGap(36, 36, 36)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(205, 205, 205))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -248,25 +269,25 @@ public class frmiGenerar extends javax.swing.JInternalFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(202, 202, 202)
-                                .addComponent(btnAdd))
+                                .addComponent(btnAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(51, 51, 51))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(35, 35, 35)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel2)
                                     .addComponent(jLabel3))
                                 .addGap(29, 29, 29)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtDescripcion)
-                                    .addComponent(txtExpresion, javax.swing.GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE))))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                                    .addComponent(txtExpresion))))
+                        .addGap(381, 381, 381)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -275,21 +296,22 @@ public class frmiGenerar extends javax.swing.JInternalFrame {
                     .addComponent(jLabel3)
                     .addComponent(txtExpresion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(9, 9, 9)
-                .addComponent(btnAdd)
+                .addComponent(btnAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(67, 67, 67)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(61, 61, 61))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(157, 157, 157)
-                                .addComponent(btnClear))
+                                .addComponent(btnClear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(203, 203, 203))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 351, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                        .addGap(22, 22, 22))))
         );
 
         jTabbedPane1.addTab("Tokens", jPanel1);
@@ -311,6 +333,7 @@ public class frmiGenerar extends javax.swing.JInternalFrame {
 
             }
         ));
+        tbldatos.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
         jScrollPane2.setViewportView(tbldatos);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -321,10 +344,10 @@ public class frmiGenerar extends javax.swing.JInternalFrame {
                 .addGap(20, 20, 20)
                 .addComponent(jLabel4)
                 .addGap(18, 18, 18)
-                .addComponent(txtNumEstados, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtNumEstados, javax.swing.GroupLayout.DEFAULT_SIZE, 253, Short.MAX_VALUE)
                 .addGap(31, 31, 31)
-                .addComponent(btnGerenar)
-                .addContainerGap(256, Short.MAX_VALUE))
+                .addComponent(btnGerenar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(256, 256, 256))
             .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         jPanel2Layout.setVerticalGroup(
@@ -337,11 +360,85 @@ public class frmiGenerar extends javax.swing.JInternalFrame {
                         .addComponent(jLabel4)
                         .addComponent(txtNumEstados, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(183, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 537, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("Matriz", jPanel2);
+
+        jPanel6.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(51, 51, 0), new java.awt.Color(204, 0, 51), new java.awt.Color(0, 0, 51), new java.awt.Color(0, 51, 51)));
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 453, Short.MAX_VALUE)
+        );
+
+        btnLimpiar.setText("Limpiar");
+        btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarActionPerformed(evt);
+            }
+        });
+
+        btnDibujarGrafo.setText("Dibujar Vértices");
+        btnDibujarGrafo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDibujarGrafoActionPerformed(evt);
+            }
+        });
+
+        btnDibujar.setText("Dibujar Aristas");
+        btnDibujar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDibujarActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(317, 317, 317)
+                        .addComponent(btnLimpiar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(251, 251, 251))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(78, 78, 78)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addComponent(btnDibujarGrafo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnDibujar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                .addGap(80, 80, 80))
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(31, 31, 31)
+                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnLimpiar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(12, 12, 12)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(2, 2, 2)
+                        .addComponent(btnDibujarGrafo, javax.swing.GroupLayout.DEFAULT_SIZE, 54, Short.MAX_VALUE))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(5, 5, 5)
+                        .addComponent(btnDibujar, javax.swing.GroupLayout.DEFAULT_SIZE, 51, Short.MAX_VALUE)))
+                .addGap(25, 25, 25))
+        );
+
+        jTabbedPane1.addTab("Grafo", jPanel5);
 
         jMenu1.setText("Archivo");
 
@@ -370,8 +467,8 @@ public class frmiGenerar extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 718, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 39, Short.MAX_VALUE))
+                .addComponent(jTabbedPane1)
+                .addGap(27, 27, 27))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -383,27 +480,186 @@ public class frmiGenerar extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+int ea;
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        GuardarDatos();
+    }//GEN-LAST:event_btnGuardarActionPerformed
 
-    private void btnEnterosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnterosActionPerformed
-        txtDescripcion.setText("");
-        txtDescripcion.setText("Entero");
-        txtExpresion.setText("");
-        txtExpresion.setText("/^[0-9]+$/");
-    }//GEN-LAST:event_btnEnterosActionPerformed
+    private void btnAbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAbrirActionPerformed
+        CargarDatos();
+    }//GEN-LAST:event_btnAbrirActionPerformed
 
-    private void btnDecimalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDecimalActionPerformed
-        txtDescripcion.setText("");
-        txtDescripcion.setText("Decimal");
-        txtExpresion.setText("");
-        txtExpresion.setText("/^-?[0-9]+([,\\.][0-9]*)?$/");
-    }//GEN-LAST:event_btnDecimalActionPerformed
+    private void btnDibujarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDibujarActionPerformed
+        crearArista();
+    }//GEN-LAST:event_btnDibujarActionPerformed
 
-    private void btnIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIDActionPerformed
-        txtDescripcion.setText("");
-        txtDescripcion.setText("ID");
-        txtExpresion.setText("");
-        txtExpresion.setText("[a-zA-Z_][a-zA-Z0-9_]*");
-    }//GEN-LAST:event_btnIDActionPerformed
+    private void btnDibujarGrafoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDibujarGrafoActionPerformed
+
+        dibujarArista();
+        simbolos.clear();
+        grafo.setListaNodonull();
+        dato=new String[m.length];
+        for (int i = 0; i < m.length; i++) {
+            dato[i]=m[i][0]+"";
+        }
+        for (int i = 1; i < m[0].length; i++) {
+            try {
+                simbolos.add((String) getM()[0][i]);
+            } catch (Exception e) {
+            }
+        }
+        if (dato != null) {
+            for (int i = 0; i < dato.length; i++) {
+                int x=(int)(Math.random()*(jPanel6.getWidth()-50) + 1);
+                int y=(int)(Math.random()*(jPanel6.getHeight()-30) + 1);
+                Coordenadas c = new Coordenadas(100000, 100000, x, y);
+                NodoG nodo = new NodoG(dato[i], c);
+                nodo.getCirculo().setDiametro(30);
+                nodo.getCirculo().setEtiqueta(nodo.getDato() + "");
+                if (grafo.adjuntarNodo(nodo)) {
+                    nodo.getCirculo().dibujarCirculo(jPanel6.getGraphics());
+                } else {
+                }
+            }
+            dibujarnodos();
+        }
+    }//GEN-LAST:event_btnDibujarGrafoActionPerformed
+
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+        jPanel6.repaint();
+        //        btnDibujar.setEnabled(false);
+        // grafo.setListaNodo();
+    }//GEN-LAST:event_btnLimpiarActionPerformed
+
+    private void btnGerenarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGerenarActionPerformed
+        if (txtNumEstados.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Ingrese el # de Estados");
+            return;
+        }
+        if(tabla2==null){
+            try {
+
+                final int x = Integer.parseInt(txtNumEstados.getText());
+                ea=x;
+                tabla2 = new DefaultTableModel() {
+
+                    @Override
+                    public boolean isCellEditable(int row, int column) {
+                        //             return column == 0;
+                        if (column == 0) {
+                            return false;
+                        }
+                        return true;
+                    }
+                };
+                //        tabla2 = (DefaultTableModel) tbldatos.getModel();
+                tabla2.setColumnCount(0);
+                tabla2.setRowCount(0);
+                //      tabla2.setValueAt(evt, 0, 0);
+                tabla2.addColumn("");
+
+                tabla2.setRowCount(x);
+                for (int i = 0; i < getLista().size(); i++) {
+                    tabla2.addColumn(getLista().get(i).getDescripcion());
+                }
+                for (int i = 0; i < x; i++) {
+                    tabla2.setValueAt(i, i, 0);
+
+                }
+                tbldatos.setModel(tabla2);
+                tbldatos.getColumnModel().getColumn(0).setCellRenderer(tbldatos.getTableHeader().getDefaultRenderer());
+            } catch (Exception e) {
+            }
+        }else{
+            int a= tabla2.getRowCount();
+            int numestados=Integer.parseInt(txtNumEstados.getText());
+            int b=numestados-a;
+            if(numestados>a){
+                Object t[]=new Object[tabla2.getColumnCount()-1];
+                for (int i = 0; i <b; i++) {
+                    tabla2.addRow(t);
+                }
+                for (int i = ea; i <tabla2.getRowCount(); i++) {
+                    tabla2.setValueAt(i, i, 0);
+                }
+            }
+            if(numestados<a){
+                for (int i = a; i > numestados; i--) {
+                    tabla2.removeRow(i-1);
+                }
+            }
+        }
+
+    }//GEN-LAST:event_btnGerenarActionPerformed
+
+    private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
+        if(JOptionPane.showConfirmDialog(this, "Vaciar los tokens?")==0){
+            if(JOptionPane.showConfirmDialog(this, "Se reiniciará la matriz de transición")==1){
+                getLista().clear();
+                llenartabla();
+                tabla2=  (DefaultTableModel) tbldatos.getModel();
+                tabla2.setColumnCount(0);
+                tabla2.setRowCount(0);
+                tbldatos.setModel(tabla2);
+            }
+
+        }
+    }//GEN-LAST:event_btnClearActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        if(JOptionPane.showConfirmDialog(this, "Eliminar el token "+jTable1.getValueAt(jTable1.getSelectedRow(), 1)+" ?")==0){
+            int y = jTable1.getSelectedRow();
+            getLista().remove(y);
+            tbldatos.removeColumn(tbldatos.getColumnModel().getColumn(y+1));
+            llenartabla();
+        }
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void btnUltimoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUltimoActionPerformed
+
+        try{
+            tbldatos.moveColumn(jTable1.getSelectedRow()+1, jTable1.getRowCount());
+            tabla.moveRow(jTable1.getSelectedRow(), jTable1.getSelectedRow(),jTable1.getRowCount()-1);
+            jTable1.setModel(tabla);
+            jTable1.changeSelection(jTable1.getRowCount()-1,jTable1.getRowCount()-1, false , false);
+
+        }catch(Exception e){}
+        //        moveralfinal();
+    }//GEN-LAST:event_btnUltimoActionPerformed
+
+    private void btnSiguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSiguienteActionPerformed
+        //        siguiente();
+
+        try{
+            tbldatos.moveColumn(jTable1.getSelectedRow()+1, (jTable1.getSelectedRow()+1)+1);
+            tabla.moveRow(jTable1.getSelectedRow(), jTable1.getSelectedRow(), jTable1.getSelectedRow()+1);
+            jTable1.changeSelection(jTable1.getSelectedRow()+1,jTable1.getSelectedRow()+1, false , false);
+            jTable1.setModel(tabla);
+
+        }catch(Exception e){}
+    }//GEN-LAST:event_btnSiguienteActionPerformed
+
+    private void btnRerocederActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRerocederActionPerformed
+
+        try{
+            tbldatos.moveColumn(jTable1.getSelectedRow()+1, (jTable1.getSelectedRow()+1)-1);
+            tabla.moveRow(jTable1.getSelectedRow(), jTable1.getSelectedRow(), jTable1.getSelectedRow()-1);
+            jTable1.changeSelection(jTable1.getSelectedRow()-1,jTable1.getSelectedRow()-1, false , false);
+            jTable1.setModel(tabla);
+
+        }catch(Exception e){}
+        //        anterior();
+    }//GEN-LAST:event_btnRerocederActionPerformed
+
+    private void btnInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInicioActionPerformed
+        //        moveralinicio();
+        try{
+            tbldatos.moveColumn(jTable1.getSelectedRow()+1, 1);
+            tabla.moveRow(jTable1.getSelectedRow(), jTable1.getSelectedRow(), 0);
+            jTable1.setModel(tabla);
+            jTable1.changeSelection(0,0, false , false);
+        }catch(Exception e){}
+    }//GEN-LAST:event_btnInicioActionPerformed
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         for (int i = 0; i < getLista().size(); i++) {
@@ -423,82 +679,164 @@ public class frmiGenerar extends javax.swing.JInternalFrame {
         fila[0] = token.getDescripcion();
         fila[1] = token.getLexema();
         tabla.addRow(fila);
+        //        tabla2= (DefaultTableModel) tbldatos.getModel();
+        if(tabla2!=null){
+            tabla2.addColumn(token.getDescripcion());
+        }
         txtDescripcion.setText("");
         txtExpresion.setText("");
     }//GEN-LAST:event_btnAddActionPerformed
 
-    private void btnInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInicioActionPerformed
-        moveralinicio();
-    }//GEN-LAST:event_btnInicioActionPerformed
+    private void btnIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIDActionPerformed
+        txtDescripcion.setText("");
+        txtDescripcion.setText("ID");
+        txtExpresion.setText("");
+        txtExpresion.setText("[a-zA-Z_][a-zA-Z0-9_]*");
+    }//GEN-LAST:event_btnIDActionPerformed
 
-    private void btnRerocederActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRerocederActionPerformed
-        anterior();
-    }//GEN-LAST:event_btnRerocederActionPerformed
+    private void btnDecimalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDecimalActionPerformed
+        txtDescripcion.setText("");
+        txtDescripcion.setText("Decimal");
+        txtExpresion.setText("");
+        txtExpresion.setText("^-?[0-9]+([,\\.][0-9]*)?$");
+    }//GEN-LAST:event_btnDecimalActionPerformed
 
-    private void btnSiguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSiguienteActionPerformed
-        siguiente();
-    }//GEN-LAST:event_btnSiguienteActionPerformed
+    private void btnEnterosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnterosActionPerformed
+        txtDescripcion.setText("");
+        txtDescripcion.setText("Entero");
+        txtExpresion.setText("");
+        txtExpresion.setText("\\d*");
 
-    private void btnUltimoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUltimoActionPerformed
-        moveralfinal();
-    }//GEN-LAST:event_btnUltimoActionPerformed
-
-    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        int y = jTable1.getSelectedRow();
-        getLista().remove(y);
-        llenartabla();
-    }//GEN-LAST:event_btnDeleteActionPerformed
-
-    private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
-        getLista().clear();
-        llenartabla();
-    }//GEN-LAST:event_btnClearActionPerformed
-
-    private void btnGerenarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGerenarActionPerformed
-        if (txtNumEstados.getText().equals("")) {
-            JOptionPane.showMessageDialog(null, "Ingrese el # de Estados");
-            return;
-        }
-        try {
-            final int x = Integer.parseInt(txtNumEstados.getText());
-            tabla2 = new DefaultTableModel() {
-
-                @Override
-                public boolean isCellEditable(int row, int column) {
-                    //             return column == 0;
-                    if (column == 0) {
-                        return false;
-                    }
-                    return true;
+    }//GEN-LAST:event_btnEnterosActionPerformed
+public void dibujarArista(){
+        ArrayList<Graficador.NodoG> listaNodo = grafo.getListaNodos();
+        for(Graficador.NodoG nodo:listaNodo){            
+            ArrayList<Enlace> listaEnlace = nodo.getListaNodoAdyacente();
+            if(listaEnlace != null){
+                for(Enlace enlace:listaEnlace){
+                    enlace.getArista().getLineaQuebrada().dibujarLineaQuebrada(jPanel6.getGraphics());
                 }
-            };
-            //        tabla2 = (DefaultTableModel) tbldatos.getModel();
-            tabla2.setColumnCount(0);
-            tabla2.setRowCount(0);
-            //      tabla2.setValueAt(evt, 0, 0);
-            tabla2.addColumn("");
-
-            tabla2.setRowCount(x);
-            for (int i = 0; i < getLista().size(); i++) {
-                tabla2.addColumn(getLista().get(i).getDescripcion());
-            }
-            for (int i = 0; i < x; i++) {
-                tabla2.setValueAt(i, i, 0);
-
-            }
-            tbldatos.setModel(tabla2);
-            tbldatos.getColumnModel().getColumn(0).setCellRenderer(tbldatos.getTableHeader().getDefaultRenderer());
-        } catch (Exception e) {
+            }            
         }
-    }//GEN-LAST:event_btnGerenarActionPerformed
-
-    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        GuardarDatos();
-    }//GEN-LAST:event_btnGuardarActionPerformed
-
-    private void btnAbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAbrirActionPerformed
-        CargarDatos();
-    }//GEN-LAST:event_btnAbrirActionPerformed
+    }public void dibujarnodos(){
+         ArrayList<NodoG> listaNodo = grafo.getListaNodos();
+         for (int i = 0; i < listaNodo.size(); i++) {
+             listaNodo.get(i).getCirculo().dibujarCirculo(jPanel6.getGraphics());           
+        }
+    }
+ private void crearArista() {
+    madyacencia = new String[getM().length][getM()[1].length];
+        for (int i = 0; i < tbldatos.getRowCount(); i++) {
+            for (int j = 1; j < tbldatos.getColumnCount(); j++) {
+                madyacencia[i][j - 1] = (String) tabla2.getValueAt(i, j)+"" ;
+            }
+        }
+        for (int i = 0; i <madyacencia.length; i++) {
+            for (int j = 0; j < madyacencia[0].length; j++) {
+                System.out.print(madyacencia[i][j]);
+            }
+            System.out.println("");
+        }
+        for (int i = 0; i < madyacencia.length; i++) {
+            
+            for (int j = 0; j < madyacencia[i].length ; j++) {
+                
+                if (!madyacencia[i][j].equals("null")) { 
+                    System.out.println(i+"filaaas");
+                    System.out.println(j+"columnaaas");
+                      NodoG  nodoA ;
+                        NodoG  nodoB ;
+                    String fila = tbldatos.getValueAt(i, 0).toString();
+                  System.out.println(fila+"   filaaa");
+                    String columna = tbldatos.getColumnName(j);
+                  System.out.println(columna+"   columnaaa");
+                 nodoA=nodos(fila);
+                 nodoB=nodosB(columna,fila);              
+                    System.out.println(nodoA.getDato().toString());
+                     System.out.println(nodoB.getDato().toString());
+        Arista arista = new Arista();
+//        int peso =    Integer.parseInt( (String) a.getValueAt(i, j));
+//        arista.setPeso(peso);
+        Coordenadas c = new Coordenadas(100000,100000);
+        c.addCoordenada(nodoA.getCirculo().getX() + (nodoA.getCirculo().getDiametro()/2),nodoA.getCirculo().getY() + (nodoA.getCirculo().getDiametro()/2));
+        c.addCoordenada(nodoB.getCirculo().getX() + (nodoB.getCirculo().getDiametro()/2),nodoB.getCirculo().getY() + (nodoB.getCirculo().getDiametro()/2));
+        LineaQuebrada lq = new LineaQuebrada(c);
+        arista.setLineaQuebrada(lq);               
+        grafo.crearEnlacesNoDirigido(nodoA, nodoB,arista);  
+                dibujarArista();
+                }
+            }
+        }
+        dibujarnodos();     
+    }
+ public NodoG nodos(String vertice){
+    NodoG z = null;
+   try{    
+      for (int i = 0; i < grafo.getListaNodos().size(); i++) {
+          if(grafo.getListaNodos().get(i).getDato().toString().equals(vertice)){
+            z=grafo.getListaNodos().get(i);
+          }
+        }
+      }catch (Exception e){}
+        return z; 
+}
+ public NodoG nodosB(String vertice,String ver){
+    NodoG z = null;
+   try{    
+       for (int i = 0; i < simbolos.size(); i++) {
+       if(simbolos.get(i).equals(vertice)){
+                     String t=(String) nodos(ver).getDato();
+                     for (int j = 0; j < grafo.getListaNodos().size(); j++) {
+               if(grafo.getListaNodos().get(j).toString().equals(t)){
+                    z=grafo.getListaNodos().get(j);
+                    System.out.println("busco nodo B");
+               }          
+                          }
+       }    
+       }
+      }catch (Exception e){}
+        return z; 
+}  public ArrayList<String> estados;
+    public ArrayList<String> alfabeto;
+    public ArrayList<Integer> inicio;
+    public ArrayList<Integer> fin;
+     public int estado=0;    public void dibujarAutomata(Automata au,PnlLienzo pl){
+        int x=40;
+        int y= 60;
+        if(!pl.getEstados().isEmpty())
+        {
+            pl.limpiar();
+        }
+        for (String item : au.getEstados().getElementos()) {
+            Estado e=new Estado(item, x, y, pl);
+            if(au.getInicio().getElementos().contains(au.getEstados().getElementos().indexOf(item)))
+                e.setInicio(true);
+            
+            if(au.getFin().getElementos().contains(au.getEstados().getElementos().indexOf(item)))
+                e.setFin(true);
+            
+            pl.agregar(e);
+            
+            
+            y=(x==440)?y+80:y;
+            x=(!(x==440))?x+=100:40;
+        }
+        if(au.getRelacion()==null)return ;
+        for (int i=0;i<pl.getEstados().size();i++) {
+            
+            for (int j = 0; j < au.getAlfabeto().getElementos().size(); j++) {
+                System.out.println(i+"-"+j);
+                String [] donde=au.getRelacion()[i][j].split(",");
+                for (int k = 0; k < donde.length; k++) {
+                    if(!donde[k].equals(""))
+                    {
+                        pl.getEstados().get(i).agregarRelacion(pl.buscar(donde[k]), au.getAlfabeto().getElementos().get(j));
+                    }
+                }
+                            
+            }
+        }
+    }
     private void GuardarDatos() {
         try {
             if(getLista().size()>0){
@@ -619,6 +957,7 @@ public class frmiGenerar extends javax.swing.JInternalFrame {
                 getLista().add(aux[i]);
             }
             llenartabla();
+         
         } catch (Exception e) {
         }
     }
@@ -718,11 +1057,14 @@ public class frmiGenerar extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnClear;
     private javax.swing.JButton btnDecimal;
     private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnDibujar;
+    private javax.swing.JButton btnDibujarGrafo;
     private javax.swing.JButton btnEnteros;
     private javax.swing.JButton btnGerenar;
     private javax.swing.JMenuItem btnGuardar;
     private javax.swing.JButton btnID;
     private javax.swing.JButton btnInicio;
+    private javax.swing.JButton btnLimpiar;
     private javax.swing.JButton btnReroceder;
     private javax.swing.JButton btnSiguiente;
     private javax.swing.JButton btnUltimo;
@@ -736,6 +1078,8 @@ public class frmiGenerar extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;

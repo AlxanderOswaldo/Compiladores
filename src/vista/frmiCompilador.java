@@ -31,6 +31,7 @@ import javax.swing.text.Highlighter;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
+import jsyntaxpane.DefaultSyntaxKit;
 import modelo.Compilador;
 import modelo.Lectura;
 import modelo.Nodo;
@@ -48,17 +49,17 @@ public class frmiCompilador extends javax.swing.JInternalFrame {
        String []reservadas= {"public","class","void"};
         DefaultStyledDocument doc;
         StyleContext sc = new StyleContext();
+            StyleContext negro = new StyleContext();
                 Style rojo = sc.addStyle("ConstantWidth", null);
-               
+                   Style negr = negro.addStyle("ConstantWidth", null);
+                    
     public frmiCompilador() {
        
         initComponents();
         leerlistaarchivo();
         mostrarlisaarchivos();
-         StyleConstants.setForeground(rojo, Color.red);
-  
-           doc= new DefaultStyledDocument(sc);
-           txpCodigo.setDocument(doc);              
+          DefaultSyntaxKit.initKit();
+          txEditor.setContentType("text/sql");
     
     }
 
@@ -80,8 +81,8 @@ public class frmiCompilador extends javax.swing.JInternalFrame {
         txaSintactico = new javax.swing.JTextArea();
         jScrollPane5 = new javax.swing.JScrollPane();
         jTextArea4 = new javax.swing.JTextArea();
-        jScrollPane6 = new javax.swing.JScrollPane();
-        txpCodigo = new javax.swing.JTextPane();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        txEditor = new javax.swing.JEditorPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         btnAbrir = new javax.swing.JMenuItem();
@@ -124,8 +125,8 @@ public class frmiCompilador extends javax.swing.JInternalFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(262, 262, 262)
-                .addComponent(btnEjecutar, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(btnEjecutar, javax.swing.GroupLayout.DEFAULT_SIZE, 44, Short.MAX_VALUE)
+                .addGap(368, 368, 368))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -156,12 +157,12 @@ public class frmiCompilador extends javax.swing.JInternalFrame {
         jTextArea4.setBorder(javax.swing.BorderFactory.createTitledBorder("Errores"));
         jScrollPane5.setViewportView(jTextArea4);
 
-        txpCodigo.addKeyListener(new java.awt.event.KeyAdapter() {
+        txEditor.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                txpCodigoKeyReleased(evt);
+                txEditorKeyReleased(evt);
             }
         });
-        jScrollPane6.setViewportView(txpCodigo);
+        jScrollPane2.setViewportView(txEditor);
 
         jMenu1.setText("Archivo");
 
@@ -191,32 +192,32 @@ public class frmiCompilador extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jScrollPane3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 296, Short.MAX_VALUE))
-                    .addComponent(jScrollPane6)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(16, Short.MAX_VALUE))
+                        .addComponent(jScrollPane4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane5))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addGap(16, 16, 16))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE)
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane5, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 209, Short.MAX_VALUE)))
+                            .addComponent(jScrollPane5)
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 222, Short.MAX_VALUE)
+                            .addComponent(jScrollPane3)))
                     .addComponent(jScrollPane1))
                 .addContainerGap())
         );
@@ -230,7 +231,7 @@ public class frmiCompilador extends javax.swing.JInternalFrame {
         if(lista.size()>0){         
            Compilador c = new Compilador();
            listasintactico=c.getListasintactico();
-        c.iniciarTira(txpCodigo.getText().replaceAll("[\n\r]"," "));
+        c.iniciarTira(txEditor.getText().toUpperCase().replaceAll("[\n\r]"," "));
                    txaLexico.setText(c.AnalisisLexico(lista));
            txaSintactico.setText(c.analisisSintactico(c.getListasintactico(), matriz)); 
 //            for (int i = 0; i < c.getListasintactico().size(); i++) {
@@ -255,7 +256,7 @@ public class frmiCompilador extends javax.swing.JInternalFrame {
    /*guardamos el archivo y le damos el formato directamente,
     * si queremos que se guarde en formato doc lo definimos como .doc*/
     FileWriter  save=new FileWriter(guarda+".txt");
-    save.write(txpCodigo.getText());
+    save.write(txEditor.getText());
     save.close();
     String dir=guarda+"";
     archivos.add(dir);
@@ -312,7 +313,7 @@ public void mostrarlisaarchivos(){
       }
          lee.close();
     }
-    txpCodigo.setText(texto);
+    txEditor.setText(texto);
    }
    catch(IOException ex){
      JOptionPane.showMessageDialog(null,ex+"" +
@@ -355,7 +356,7 @@ public void mostrarlisaarchivos(){
       }
          lee.close();
     }
-    txpCodigo.setText(texto);
+    txEditor.setText(texto);
    }
    catch(IOException ex){
      JOptionPane.showMessageDialog(null,ex+"" +
@@ -370,50 +371,11 @@ public void mostrarlisaarchivos(){
              lstArchivos.setListData(archivos.toArray());
     }//GEN-LAST:event_popupCerrarActionPerformed
 
-          
-    private void txpCodigoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txpCodigoKeyReleased
-       if(txpCodigo.getText().length()>0){
-        
-          l= new Lectura(txpCodigo.getText().replaceAll("[\n\r]"," "));
-         while (true) {
-            String tokenActual = l.getToken();
-            if (tokenActual == null) {
-                break;
-            }
-             btnEjecutarActionPerformed(null);
-             for (int i = 0; i < reservadas.length; i++) {
-                 
-             Pattern p= Pattern.compile("^"+reservadas[i]+"$");
-//             if(p.matcher(reservadas[i]).matches()){
-//                 
-//             }
-                        Matcher m = p.matcher(txpCodigo.getText().replaceAll("[\n\r]"," "));
-                        while(m.find()){
-                             doc.setCharacterAttributes(m.start(), m.end(), rojo, false);
-                        }
-             }
-            
-//               for (int i = 0; i <listasintactico.size() ; i++) {
-//                 for (int j = 0; j < reservadas.length; j++) {
-//                  if(reservadas[j].equals(listasintactico.get(i).getLexema())){
-//                       Pattern p= Pattern.compile(reservadas[j]);
-//                        Matcher m = p.matcher(txpCodigo.getText().replaceAll("[\n\r]"," "));
-//                        while(m.find()){
-//                             doc.setCharacterAttributes(m.start(), m.end(), rojo, false);
-//                        }
-//                      System.out.println(listasintactico.get(i).getLexema()+"---se debe colorer");
-////                      doc.setCharacterAttributes(0, 4, rojo, false);
-//                                       }
-//                 }
-//             }
-            
-         }
-       }
-        
-        
-        
-    }//GEN-LAST:event_txpCodigoKeyReleased
-//public ArrayList<Nodo> getLista(){
+    private void txEditorKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txEditorKeyReleased
+        btnEjecutarActionPerformed(null);
+    }//GEN-LAST:event_txEditorKeyReleased
+
+          //public ArrayList<Nodo> getLista(){
 //     ArrayList<Nodo> a; 
 //       Lectura l= new Lectura(txpCodigo.getText().replaceAll("\n", ""));
 //    while (true) {
@@ -436,16 +398,16 @@ public void mostrarlisaarchivos(){
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
-    private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JTextArea jTextArea4;
     private javax.swing.JList lstArchivos;
     private javax.swing.JMenuItem popupCerrar;
     private javax.swing.JMenuItem poupAbrir;
+    private javax.swing.JEditorPane txEditor;
     private javax.swing.JTextArea txaLexico;
     private javax.swing.JTextArea txaSintactico;
-    private javax.swing.JTextPane txpCodigo;
     // End of variables declaration//GEN-END:variables
 }
