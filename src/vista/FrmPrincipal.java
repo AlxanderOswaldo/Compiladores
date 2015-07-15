@@ -30,6 +30,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
         editMenu = new javax.swing.JMenu();
         btnGenerar = new javax.swing.JMenuItem();
         btnCompilador = new javax.swing.JMenuItem();
+        btnMicodigo = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -53,6 +54,14 @@ public class FrmPrincipal extends javax.swing.JFrame {
             }
         });
         editMenu.add(btnCompilador);
+
+        btnMicodigo.setText("Mi Código");
+        btnMicodigo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMicodigoActionPerformed(evt);
+            }
+        });
+        editMenu.add(btnMicodigo);
 
         menuBar.add(editMenu);
 
@@ -83,6 +92,12 @@ public class FrmPrincipal extends javax.swing.JFrame {
        desktopPane.add(frmi);
        frmi.setVisible(true);
     }//GEN-LAST:event_btnCompiladorActionPerformed
+
+    private void btnMicodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMicodigoActionPerformed
+      frmiMicodigo frmi= new frmiMicodigo();
+      desktopPane.add(frmi);
+      frmi.setVisible(true);
+    }//GEN-LAST:event_btnMicodigoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -122,6 +137,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem btnCompilador;
     private javax.swing.JMenuItem btnGenerar;
+    private javax.swing.JMenuItem btnMicodigo;
     private javax.swing.JDesktopPane desktopPane;
     private javax.swing.JMenu editMenu;
     private javax.swing.JMenuBar menuBar;

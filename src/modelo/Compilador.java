@@ -196,14 +196,21 @@ private ArrayList<Nodo> listasintactico= new ArrayList<Nodo>();
     }
     public static void main(String[] args) {
         Compilador c = new Compilador();
-        c.iniciarTira("public class Compilador private { ");
-        c.analisisLexico();
+//        c.iniciarTira("public class Compilador private { ");
+//        c.analisisLexico();
 //        List<NodoToken> ele = c.getListaToken();
 //        for (NodoToken e : ele) {
 //            System.out.println(Token.getDescripcion(e.getToken()) + "\t -> " + e.getLexema());
 //        }
-        System.out.println("--------------------------------");
 //        c.analisisSintactico();
+        String s="digraph finite_state_machine {"+"\n"+"rankdir=LR;"+"\n"+"size=\"50\";"+"\n"+
+"overlap=prism;"+"\n"+"overlap_scaling=0.01;"+"\n"+" ratio=0.4;"
+         +"\n"+"node [shape = doublecircle]; 0 4;"+"\n"+"node [shape = circle];";
+	
+//        System.out.println(s);
+//        System.out.println("\"");
+        tokens t;
+       
     }
 
     /**

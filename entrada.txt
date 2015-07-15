@@ -1,0 +1,4 @@
+Programa
+Declracion
+Estructura
+Fin

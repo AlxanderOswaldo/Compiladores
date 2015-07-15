@@ -1,0 +1,67 @@
+package modello;
+import java.io.*;
+import java_cup.runtime.*; 
+import java.util.ArrayList;
+action code {:
+
+       ArrayList<String> at= new ArrayList<>();
+    public void ImprimeValor(String str){
+        System.out.println("elr del token"+str) ;
+    }
+
+:}; 
+
+parser code{:
+    public String mensaje_error="Código fuente sin errores...";
+    public void syntax_error(Symbol st){
+        token t=(token)st.value;
+        mensaje_error = "Error Sintactico en : linea: "+(t.getX()+1)+ "\t" +"columna: "+t.getY()+ "\t" +"caracter: "+t.getValor();
+        //report_error("Error Sintactico:"+ t.getValor()+"- "+t.getX()+"-"+t.getY(),null);
+    }
+public void sintactico(){
+CUP$parser$actions r= new CUP$parser$actions(this);
+    for (int i = 0; i < r.at.size(); i++) {
+        System.out.println(r.at.get(i));
+    }
+}
+:};
+
+terminal String PROGRAMA, DECLARACIONES, ESTRUCTURA, ID, ENTERO, DECIMAL, CADENA, IMPRIMIR, FIN;
+terminal MAYOR, MIENTRAS, O, DISTINTO, BOOLEANO, MENOS, DIVIDENDO, IGUAL, DESDE, POR, MAS, SI;
+terminal Y, VECTOR, MENOR, MENORIG, PARAR, NO, MAYORIG, PCOMA, NENTERO, NDECIMAL, DCADENA;
+terminal VERDADERO, FALSO, COMA, PARENA, PARENC, INICIO, CICLO;
+non terminal inicio, variables, var, igpc, iv, valor, bln, findeclaracion, sg, vc, vector, tdato,
+ pgrm, for, mientras, desde, si, comparacion, cuerpo, suma,resta, mult, div, signos, operacion,
+idvalor, valorop, asignar, ciclo;
+start with inicio;
+ inicio ::= INICIO PROGRAMA ID DECLARACIONES variables  cuerpo  | 
+           INICIO PROGRAMA  ID DECLARACIONES  cuerpo | error {: System.out.println("Error sintactico en la sentencia"); :};
+variables ::=  var ID:id  igpc  findeclaracion |  ESTRUCTURA FIN PROGRAMA ;
+findeclaracion ::= variables | cuerpo;
+cuerpo ::= ESTRUCTURA pgrm FIN PROGRAMA;
+igpc ::= iv | PCOMA;
+iv ::= IGUAL valor PCOMA;
+valor ::= vector | bln | NENTERO | NDECIMAL | DCADENA;
+bln ::= VERDADERO | FALSO;
+vector ::= PARENA vc PARENC;
+vc ::= valor | sg;
+sg ::= valor COMA vc;
+
+var ::= ENTERO | DECIMAL | CADENA | VECTOR tdato | BOOLEANO; 
+tdato ::= ENTERO | DECIMAL | CADENA | BOOLEANO; 
+pgrm ::=  mientras | si | IMPRIMIR | operacion | asignar | ciclo | PROGRAMA;
+ciclo ::= INICIO CICLO pgrm FIN CICLO pgrm| (INICIO CICLO ) (FIN CICLO) pgrm
+ | (INICIO CICLO ) (FIN CICLO)
+;
+
+asignar ::= ID IGUAL valorop PCOMA pgrm;
+valorop ::= valor | operacion;
+si ::=  SI idvalor comparacion idvalor PCOMA pgrm;
+operacion ::= suma | resta | mult | div;
+suma ::= ID signos ID  | valor signos valor ;
+
+signos ::= MAS | MENOS | POR | DIVIDENDO;
+mientras ::= MIENTRAS idvalor comparacion idvalor PCOMA pgrm;
+idvalor ::= ID | valor; 
+comparacion ::= MAYOR | MENOR | MENORIG | MAYORIG | IGUAL | DISTINTO;
+ 

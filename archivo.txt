@@ -1,0 +1,7 @@
+Inicio Programa alxx
+Declaraciones
+Estructura
+Inicio Ciclo
+Fin Ciclo
+a=0;
+Fin Programa

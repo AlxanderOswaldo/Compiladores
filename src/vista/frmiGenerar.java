@@ -5,26 +5,29 @@
  */
 package vista;
 
-import Graficador.Arista;
-import Graficador.Coordenadas;
-import Graficador.Enlace;
-import Graficador.Grafo;
-import Graficador.LineaQuebrada;
-import Graficador.NodoG;
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import modelo.Archivo;
 import modelo.Automata;
 import modelo.Conjunto;
-import modelo.Estado;
+
 import modelo.Nodo;
+import sun.awt.image.ImageAccessException;
 
 
 /**
@@ -32,21 +35,23 @@ import modelo.Nodo;
  * @author alxx_pc
  */
 public class frmiGenerar extends javax.swing.JInternalFrame {
- Grafo grafo = new Grafo();
     Archivo arc;
+    String dir;
     private static Object[][] m;
     private static ArrayList<Nodo> lista = new ArrayList();
     DefaultTableModel tabla;
     DefaultTableModel tabla2 =null;
+     String nombrearchivo;
  ArrayList<String> simbolos = new ArrayList<>();
   String dato[];
     String madyacencia[][];
     public frmiGenerar() {
         initComponents();
+//        tbldatos=null;
         tbldatos.getTableHeader().setReorderingAllowed(false);
         jTable1.getTableHeader().setReorderingAllowed(false);
         tabla2=null;
-       btnDibujar.setEnabled(false);
+   
     }
 
     /**
@@ -85,15 +90,15 @@ public class frmiGenerar extends javax.swing.JInternalFrame {
         btnGerenar = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         tbldatos = new javax.swing.JTable();
-        jPanel5 = new javax.swing.JPanel();
-        jPanel6 = new javax.swing.JPanel();
-        btnLimpiar = new javax.swing.JButton();
-        btnDibujarGrafo = new javax.swing.JButton();
-        btnDibujar = new javax.swing.JButton();
+        jPanel7 = new javax.swing.JPanel();
+        btnGraficar = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        lblGrafo = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         btnGuardar = new javax.swing.JMenuItem();
         btnAbrir = new javax.swing.JMenuItem();
+        btnNuevo = new javax.swing.JMenuItem();
 
         setClosable(true);
         setIconifiable(true);
@@ -344,7 +349,7 @@ public class frmiGenerar extends javax.swing.JInternalFrame {
                 .addGap(20, 20, 20)
                 .addComponent(jLabel4)
                 .addGap(18, 18, 18)
-                .addComponent(txtNumEstados, javax.swing.GroupLayout.DEFAULT_SIZE, 253, Short.MAX_VALUE)
+                .addComponent(txtNumEstados, javax.swing.GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE)
                 .addGap(31, 31, 31)
                 .addComponent(btnGerenar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(256, 256, 256))
@@ -360,85 +365,45 @@ public class frmiGenerar extends javax.swing.JInternalFrame {
                         .addComponent(jLabel4)
                         .addComponent(txtNumEstados, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 537, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 541, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         jTabbedPane1.addTab("Matriz", jPanel2);
 
-        jPanel6.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(51, 51, 0), new java.awt.Color(204, 0, 51), new java.awt.Color(0, 0, 51), new java.awt.Color(0, 51, 51)));
-
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
-        jPanel6.setLayout(jPanel6Layout);
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 453, Short.MAX_VALUE)
-        );
-
-        btnLimpiar.setText("Limpiar");
-        btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
+        btnGraficar.setText("Graficar");
+        btnGraficar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLimpiarActionPerformed(evt);
+                btnGraficarActionPerformed(evt);
             }
         });
 
-        btnDibujarGrafo.setText("Dibujar Vértices");
-        btnDibujarGrafo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDibujarGrafoActionPerformed(evt);
-            }
-        });
+        lblGrafo.setBorder(javax.swing.BorderFactory.createTitledBorder("Grafo"));
+        jScrollPane3.setViewportView(lblGrafo);
 
-        btnDibujar.setText("Dibujar Aristas");
-        btnDibujar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDibujarActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGap(317, 317, 317)
-                        .addComponent(btnLimpiar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(251, 251, 251))
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGap(78, 78, 78)
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addComponent(btnDibujarGrafo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnDibujar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
-                .addGap(80, 80, 80))
+        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+        jPanel7.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addGap(332, 332, 332)
+                .addComponent(btnGraficar, javax.swing.GroupLayout.DEFAULT_SIZE, 161, Short.MAX_VALUE)
+                .addGap(351, 351, 351))
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane3)
+                .addContainerGap())
         );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(31, 31, 31)
-                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnLimpiar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(12, 12, 12)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGap(2, 2, 2)
-                        .addComponent(btnDibujarGrafo, javax.swing.GroupLayout.DEFAULT_SIZE, 54, Short.MAX_VALUE))
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGap(5, 5, 5)
-                        .addComponent(btnDibujar, javax.swing.GroupLayout.DEFAULT_SIZE, 51, Short.MAX_VALUE)))
-                .addGap(25, 25, 25))
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 557, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnGraficar, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Grafo", jPanel5);
+        jTabbedPane1.addTab("Grafo", jPanel7);
 
         jMenu1.setText("Archivo");
 
@@ -458,6 +423,14 @@ public class frmiGenerar extends javax.swing.JInternalFrame {
         });
         jMenu1.add(btnAbrir);
 
+        btnNuevo.setText("Nuevo");
+        btnNuevo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNuevoActionPerformed(evt);
+            }
+        });
+        jMenu1.add(btnNuevo);
+
         jMenuBar1.add(jMenu1);
 
         setJMenuBar(jMenuBar1);
@@ -467,8 +440,9 @@ public class frmiGenerar extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jTabbedPane1)
-                .addGap(27, 27, 27))
+                .addGap(17, 17, 17))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -483,53 +457,67 @@ public class frmiGenerar extends javax.swing.JInternalFrame {
 int ea;
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         GuardarDatos();
+        savegraph();
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnAbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAbrirActionPerformed
         CargarDatos();
     }//GEN-LAST:event_btnAbrirActionPerformed
 
-    private void btnDibujarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDibujarActionPerformed
-        crearArista();
-    }//GEN-LAST:event_btnDibujarActionPerformed
-
-    private void btnDibujarGrafoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDibujarGrafoActionPerformed
-
-        dibujarArista();
-        simbolos.clear();
-        grafo.setListaNodonull();
-        dato=new String[m.length];
-        for (int i = 0; i < m.length; i++) {
-            dato[i]=m[i][0]+"";
-        }
-        for (int i = 1; i < m[0].length; i++) {
+    private void btnGraficarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGraficarActionPerformed
+        if(tbldatos.getRowCount()>0){
             try {
-                simbolos.add((String) getM()[0][i]);
-            } catch (Exception e) {
-            }
-        }
-        if (dato != null) {
-            for (int i = 0; i < dato.length; i++) {
-                int x=(int)(Math.random()*(jPanel6.getWidth()-50) + 1);
-                int y=(int)(Math.random()*(jPanel6.getHeight()-30) + 1);
-                Coordenadas c = new Coordenadas(100000, 100000, x, y);
-                NodoG nodo = new NodoG(dato[i], c);
-                nodo.getCirculo().setDiametro(30);
-                nodo.getCirculo().setEtiqueta(nodo.getDato() + "");
-                if (grafo.adjuntarNodo(nodo)) {
-                    nodo.getCirculo().dibujarCirculo(jPanel6.getGraphics());
-                } else {
-                }
-            }
-            dibujarnodos();
-        }
-    }//GEN-LAST:event_btnDibujarGrafoActionPerformed
+                //path del dot.exe,por lo general es la misma, pero depende de donde hayas instalado el paquete de Graphviz
+                String dotPath="C:\\Program Files (x86)\\Graphviz2.38\\bin\\dot.exe";
 
-    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
-        jPanel6.repaint();
-        //        btnDibujar.setEnabled(false);
-        // grafo.setListaNodo();
-    }//GEN-LAST:event_btnLimpiarActionPerformed
+                //path del archivo creado con el codigo del graphviz que queremos
+
+                String fileInputPath="C:\\Program Files (x86)\\Graphviz2.38\\bin\\"+nombrearchivo+".txt";
+                //path de salida del grafo, es decir el path de la imagen que vamos a crear con graphviz
+
+                String fileOutputPath="C:\\Program Files (x86)\\Graphviz2.38\\bin\\"+nombrearchivo+".jpg";
+                //tipo de imagen de salida, en este caso es jpg
+
+                String tParam="-Tjpg";
+
+                String tOParam="-o";
+
+                //concatenamos nuestras direcciones. Lo que hice es crear un vector, para poder editar las direcciones de entrada y salida, usando las variables antes inicializadas
+
+                //recordemos el comando en la consola de windows: C:\Archivos de programa\Graphviz 2.21\bin\dot.exe -Tjpg grafo1.txt -o grafo1.jpg Esto es lo que concatenamos en el vector siguiente:
+
+                String[] cmd = new String[5];
+                cmd[0] = dotPath;
+                cmd[1] = tParam;
+                cmd[2] = fileInputPath;
+                cmd[3] = tOParam;
+                cmd[4] = fileOutputPath;
+
+                //Invocamos nuestra clase
+
+                Runtime rt = Runtime.getRuntime();
+
+                //Ahora ejecutamos como lo hacemos en consola
+
+                rt.exec( cmd );
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+//            System.out.println(graphviz());
+        
+   try{
+      
+        String imageName="C:\\Program Files (x86)\\Graphviz2.38\\bin\\"+nombrearchivo+".jpg";
+    lblGrafo.setIcon( new ImageIcon(ImageIO.read( new File(imageName) ) ) );  
+   }catch(Exception e){
+       System.out.println("error al cargar grafo");
+   }
+
+  
+        }else{
+            JOptionPane.showMessageDialog(this, "No hay Datos que Graficar");
+        }
+    }//GEN-LAST:event_btnGraficarActionPerformed
 
     private void btnGerenarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGerenarActionPerformed
         if (txtNumEstados.getText().equals("")) {
@@ -589,7 +577,6 @@ int ea;
                 }
             }
         }
-
     }//GEN-LAST:event_btnGerenarActionPerformed
 
     private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
@@ -706,137 +693,53 @@ int ea;
         txtDescripcion.setText("Entero");
         txtExpresion.setText("");
         txtExpresion.setText("\\d*");
-
     }//GEN-LAST:event_btnEnterosActionPerformed
-public void dibujarArista(){
-        ArrayList<Graficador.NodoG> listaNodo = grafo.getListaNodos();
-        for(Graficador.NodoG nodo:listaNodo){            
-            ArrayList<Enlace> listaEnlace = nodo.getListaNodoAdyacente();
-            if(listaEnlace != null){
-                for(Enlace enlace:listaEnlace){
-                    enlace.getArista().getLineaQuebrada().dibujarLineaQuebrada(jPanel6.getGraphics());
-                }
-            }            
+
+    private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
+       getLista().clear();
+        btnClearActionPerformed(evt);
+       
+      
+    }//GEN-LAST:event_btnNuevoActionPerformed
+
+    public String graphviz(){
+ String s="digraph finite_state_machine {"+"\n"+"rankdir=LR;"+"\n"+"size=\"50\";"+"\n"+
+"overlap=prism;"+"\n"+"overlap_scaling=0.01;"+"\n"+" ratio=0.4;"
+         +"\n"+"node [shape = doublecircle]; 0 4;"+"\n"+"node [shape = circle];";
+	
+        String result = s+"\n";
+      
+        for (int i = 1; i < getM().length; i++) {
+            for (int j = 1; j < getM()[0].length; j++) {
+          if(!getM()[i][j].equals("-")&&getM()[i][j]!=null&&!getM()[i][j].equals("")){
+              String a=getM()[i][j]+"";
+              String b= getM()[0][j]+"";
+               String c=getM()[i][0]+"";
+               result+=c+"->"+a+"[label="+"\""+b+"\""+"];"+"\n";
+//                       LR_0 -> LR_2 [ label = "pblic" ];
+               
+          }      
+            }
         }
-    }public void dibujarnodos(){
-         ArrayList<NodoG> listaNodo = grafo.getListaNodos();
-         for (int i = 0; i < listaNodo.size(); i++) {
-             listaNodo.get(i).getCirculo().dibujarCirculo(jPanel6.getGraphics());           
+       result+="}";
+     return result;
+    }
+    public void savegraph(){
+        
+        if(tbldatos.getRowCount()>0){
+            System.out.println("entro acaaa");
+          FileWriter  save;
+      dir="C:\\Program Files (x86)\\Graphviz2.38\\bin\\"+nombrearchivo;
+     try {
+         save = new FileWriter(dir+".txt");
+         save.write(graphviz());
+    save.close();
+     } catch (IOException ex) {
+         Logger.getLogger(frmiGenerar.class.getName()).log(Level.SEVERE, null, ex);
+     }
         }
     }
- private void crearArista() {
-    madyacencia = new String[getM().length][getM()[1].length];
-        for (int i = 0; i < tbldatos.getRowCount(); i++) {
-            for (int j = 1; j < tbldatos.getColumnCount(); j++) {
-                madyacencia[i][j - 1] = (String) tabla2.getValueAt(i, j)+"" ;
-            }
-        }
-        for (int i = 0; i <madyacencia.length; i++) {
-            for (int j = 0; j < madyacencia[0].length; j++) {
-                System.out.print(madyacencia[i][j]);
-            }
-            System.out.println("");
-        }
-        for (int i = 0; i < madyacencia.length; i++) {
-            
-            for (int j = 0; j < madyacencia[i].length ; j++) {
-                
-                if (!madyacencia[i][j].equals("null")) { 
-                    System.out.println(i+"filaaas");
-                    System.out.println(j+"columnaaas");
-                      NodoG  nodoA ;
-                        NodoG  nodoB ;
-                    String fila = tbldatos.getValueAt(i, 0).toString();
-                  System.out.println(fila+"   filaaa");
-                    String columna = tbldatos.getColumnName(j);
-                  System.out.println(columna+"   columnaaa");
-                 nodoA=nodos(fila);
-                 nodoB=nodosB(columna,fila);              
-                    System.out.println(nodoA.getDato().toString());
-                     System.out.println(nodoB.getDato().toString());
-        Arista arista = new Arista();
-//        int peso =    Integer.parseInt( (String) a.getValueAt(i, j));
-//        arista.setPeso(peso);
-        Coordenadas c = new Coordenadas(100000,100000);
-        c.addCoordenada(nodoA.getCirculo().getX() + (nodoA.getCirculo().getDiametro()/2),nodoA.getCirculo().getY() + (nodoA.getCirculo().getDiametro()/2));
-        c.addCoordenada(nodoB.getCirculo().getX() + (nodoB.getCirculo().getDiametro()/2),nodoB.getCirculo().getY() + (nodoB.getCirculo().getDiametro()/2));
-        LineaQuebrada lq = new LineaQuebrada(c);
-        arista.setLineaQuebrada(lq);               
-        grafo.crearEnlacesNoDirigido(nodoA, nodoB,arista);  
-                dibujarArista();
-                }
-            }
-        }
-        dibujarnodos();     
-    }
- public NodoG nodos(String vertice){
-    NodoG z = null;
-   try{    
-      for (int i = 0; i < grafo.getListaNodos().size(); i++) {
-          if(grafo.getListaNodos().get(i).getDato().toString().equals(vertice)){
-            z=grafo.getListaNodos().get(i);
-          }
-        }
-      }catch (Exception e){}
-        return z; 
-}
- public NodoG nodosB(String vertice,String ver){
-    NodoG z = null;
-   try{    
-       for (int i = 0; i < simbolos.size(); i++) {
-       if(simbolos.get(i).equals(vertice)){
-                     String t=(String) nodos(ver).getDato();
-                     for (int j = 0; j < grafo.getListaNodos().size(); j++) {
-               if(grafo.getListaNodos().get(j).toString().equals(t)){
-                    z=grafo.getListaNodos().get(j);
-                    System.out.println("busco nodo B");
-               }          
-                          }
-       }    
-       }
-      }catch (Exception e){}
-        return z; 
-}  public ArrayList<String> estados;
-    public ArrayList<String> alfabeto;
-    public ArrayList<Integer> inicio;
-    public ArrayList<Integer> fin;
-     public int estado=0;    public void dibujarAutomata(Automata au,PnlLienzo pl){
-        int x=40;
-        int y= 60;
-        if(!pl.getEstados().isEmpty())
-        {
-            pl.limpiar();
-        }
-        for (String item : au.getEstados().getElementos()) {
-            Estado e=new Estado(item, x, y, pl);
-            if(au.getInicio().getElementos().contains(au.getEstados().getElementos().indexOf(item)))
-                e.setInicio(true);
-            
-            if(au.getFin().getElementos().contains(au.getEstados().getElementos().indexOf(item)))
-                e.setFin(true);
-            
-            pl.agregar(e);
-            
-            
-            y=(x==440)?y+80:y;
-            x=(!(x==440))?x+=100:40;
-        }
-        if(au.getRelacion()==null)return ;
-        for (int i=0;i<pl.getEstados().size();i++) {
-            
-            for (int j = 0; j < au.getAlfabeto().getElementos().size(); j++) {
-                System.out.println(i+"-"+j);
-                String [] donde=au.getRelacion()[i][j].split(",");
-                for (int k = 0; k < donde.length; k++) {
-                    if(!donde[k].equals(""))
-                    {
-                        pl.getEstados().get(i).agregarRelacion(pl.buscar(donde[k]), au.getAlfabeto().getElementos().get(j));
-                    }
-                }
-                            
-            }
-        }
-    }
+     
     private void GuardarDatos() {
         try {
             if(getLista().size()>0){
@@ -844,6 +747,8 @@ public void dibujarArista(){
             String ruta = "";
             if (jF1.showSaveDialog(null) == jF1.APPROVE_OPTION) {
                 ruta = jF1.getSelectedFile().getAbsolutePath();
+                nombrearchivo=jF1.getSelectedFile().getName();
+               
                 Object estados[][];
                 if (tabla2 != null) {
                     estados = new Object[tabla2.getRowCount() + 1][tabla2.getColumnCount()];
@@ -856,6 +761,8 @@ public void dibujarArista(){
                                 Object x = tabla2.getValueAt(i, j);
                                 estados[i + 1][j] = x;
 
+                            }else{
+                              estados[i + 1][j] = "-";   
                             }
                         }
                     }
@@ -884,6 +791,7 @@ public void dibujarArista(){
         try {
             JFileChooser file = new JFileChooser();
               if (file.showOpenDialog(null) == file.APPROVE_OPTION) {
+                  nombrearchivo=file.getSelectedFile().getName();
             XMLDecoder i = new XMLDecoder(new FileInputStream(file.getSelectedFile()));
             ArrayList<Archivo> arch = new ArrayList<>();
             tabla = (DefaultTableModel) jTable1.getModel();
@@ -1057,14 +965,13 @@ public void dibujarArista(){
     private javax.swing.JButton btnClear;
     private javax.swing.JButton btnDecimal;
     private javax.swing.JButton btnDelete;
-    private javax.swing.JButton btnDibujar;
-    private javax.swing.JButton btnDibujarGrafo;
     private javax.swing.JButton btnEnteros;
     private javax.swing.JButton btnGerenar;
+    private javax.swing.JButton btnGraficar;
     private javax.swing.JMenuItem btnGuardar;
     private javax.swing.JButton btnID;
     private javax.swing.JButton btnInicio;
-    private javax.swing.JButton btnLimpiar;
+    private javax.swing.JMenuItem btnNuevo;
     private javax.swing.JButton btnReroceder;
     private javax.swing.JButton btnSiguiente;
     private javax.swing.JButton btnUltimo;
@@ -1078,12 +985,13 @@ public void dibujarArista(){
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JLabel lblGrafo;
     private javax.swing.JTable tbldatos;
     private javax.swing.JTextField txtDescripcion;
     private javax.swing.JTextField txtExpresion;
